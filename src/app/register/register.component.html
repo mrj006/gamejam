@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8" />
+        <title>Sign Up</title>
+    </head>
+
+    <body>
+        <div class="container py-5">
+            <div class="card signup_v4 mb-30">
+                <div class="card-body">
+                    <div class="widgets-wrap float-md-left">
+                        <div class="widget-header mr-3">
+                            <button class="icon icon-sm rounded-circle border" id="home"><i class="fa fa-home"></i></button>
+                        </div>
+                    </div> <!-- widgets-wrap.// -->
+                    <h4 class="text-center mt-4 mb-4" style="text-transform: uppercase;">Sign Up</h4>
+                    <form>
+                        <div class="form-row">
+                            <div class="mb-3 col-md-12"> 
+                                <label class="form-label" for="name"><b>Name</b></label>
+                                <input class="form-control" type="text" placeholder="Type in your name" id="name" name="name" #name required />
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label" for="lastName"><b>Last name</b></label>
+                                <input class="form-control" type="text" placeholder="Type in your last name" id="lastName" name="lastName" #lastName required />                
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label" for="email"><b>Email</b></label>
+                                <input class="form-control" type="email" placeholder="Type in your email address" id="email" name="email" #email
+                                    pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" title="You must type a valid email!" required />                
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label" for="password"><b>Password</b></label>
+                                <input class="form-control" type="password" placeholder="Type in your password" id="password" name="password" #password required />                
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label" for="user"><b>Username</b></label>
+                                <input class="form-control" type="text" placeholder="Type in your username" id="username" name="username" #username required />                
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label" for="discord"><b>Discord username</b></label>
+                                <input class="form-control" type="text" placeholder="Type in your discord username" id="discord" name="discord" #discord required />
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label" for="phone"><b>Phone number</b></label>
+                                <input class="form-control" type="tel" placeholder="Type in your phone number" id="phone" name="phone" #phone
+                                    pattern="^\+\d{1,3}\d{1,14}$" title="You must provide a valid phone number!" required />
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label" for="birthDate"><b>Birthdate</b></label>
+                                <input class="form-control" type="date" id="birthDate" name="birthDate" #birthDate required />
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label" for="id"><b>ID</b></label>
+                                <input class="form-control" type="text" placeholder="Type in your national ID" id="id" name="id" #id />
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label" for="academicInstitution"><b>Academic Institution</b></label>
+                                <input class="form-control" type="text" placeholder="Type in your academic institution" id="academicInstitution"
+                                    name="academicInstitution" #academicInstitution required />
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label" for="medicalConditions">Medical Conditions:</label>
+                                <textarea class="form-control" id="medicalConditions" name="medicalConditions" #medicalConditions></textarea>
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label" for="dietaryConditions">Dietary Conditions:</label>
+                                <textarea class="form-control" id="dietaryConditions" name="dietaryConditions" #dietaryConditions></textarea>
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label" for="hasParticipated">Have you participated before?</label>
+                                <input class="form-control" type="checkbox" id="hasParticipated" name="hasParticipated" #hasParticipated value="false">
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label><b>Gender</b></label>
+                                <div>
+                                    <label class="form-label" for="female"><input type="radio" id="female" name="gender" #female value="Female"
+                                            required /> Female</label>
+                                </div>
+                                <div>
+                                    <label class="form-label" for="male"><input type="radio" id="male" name="gender" #male value="Male" 
+                                            required /> Male</label>
+                                </div>
+                                <div>
+                                    <label class="form-label" for="nonBinary"><input type="radio" id="nonBinary" name="gender" #nonBinary value="Non-binary"
+                                            required /> Non-binary</label>
+                                </div>
+                                <div>
+                                    <label class="form-label" for="other"><input type="radio" id="other" name="gender" #other value="Other"
+                                            required /> Other</label>
+                                </div>
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label" for="shirtSize">Shirt Size:</label>
+                                <select id="shirtSize" name="shirtSize" #shirtSize>
+                                    <option value="XXXS">XXXS</option>
+                                    <option value="XXS">XXS</option>
+                                    <option value="XS">XS</option>
+                                    <option value="S">S</option>
+                                    <option value="M" selected>M</option>
+                                    <option value="L">L</option>
+                                    <option value="XL">XL</option>
+                                    <option value="XXL">XXL</option>
+                                    <option value="XXXL">XXXL</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr class="mt-3 mb-4">
+                        <div class="col-12">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                <div class="mt-2 mb-3">
+                                    <button class="btn btn-primary full-width" id="login">
+                                        <p>Log In</p>
+                                    </button>
+                                </div>
+                                <div class="mt-2 mb-3">
+                                    <button class="btn btn-primary full-width" id="register">
+                                        <p>Register</p>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
