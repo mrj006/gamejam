@@ -9,6 +9,7 @@ import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { TeamInfoComponent } from './team-info/team-info.component';
 import { GameInfoComponent } from './game-info/game-info.component';
+import { FirstStageComponent } from './first-stage/first-stage.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { GameInfoComponent } from './game-info/game-info.component';
     HomeComponent,
     TeamInfoComponent,
     GameInfoComponent,
+    FirstStageComponent,
   ],
   imports: [
     BrowserModule,
