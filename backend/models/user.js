@@ -1,50 +1,49 @@
 const mongoose = require("mongoose");
+const path = require("path");
+require('dotenv').config({ path: path.resolve("backend", '.env') });
 
 //_id is the email, mongoose requirement https://mongoosejs.com/docs/guide.html#_id
 const userSchema = new mongoose.Schema({
     _id: {
         type: String,
-        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, "You have entered an invalid email!"],
+        match: [new RegExp(process.env.EMAIL_REGEX), process.env.EMAIL_ERROR],
     },
     name: {
         type: String,
-        require: true,
+        required: true,
     },
     lastName: {
         type: String,
-        require: true,
+        required: true,
     },
     username: {
         type: String,
         unique: true,
-        require: true,
+        required: true,
     },
     password: {
         type: String,
-        require: true,
+        required: true,
     },
     discord: {
         type: String,
-        require: true,
+        required: true,
     },
     phone: {
         type: String,
-        require: true,
-        match: [/^\+\d{1,3}\d{1,14}$/, 'You have entered an invalid phone number!'],
-    },
-    gender: {
-        type: String,
-        require: true,
-        enum: [
-            'Female',
-            'Male',
-            'Non-binary',
-            'Other'
-        ],
+        required: true,
+        match: [new RegExp(process.env.PHONE_REGEX), process.env.PHONE_ERROR],
     },
     birthDate: {
         type: Date,
-        require: true,
+        required: true,
+        validate: {
+            validator: function(v) {
+                let age = (new Date()).getFullYear() - v.getFullYear();
+                return age >= 18;
+            },
+            message: () => process.env.BIRTH_ERROR,
+        },
     },
     identification: {
         type: String,
@@ -52,12 +51,7 @@ const userSchema = new mongoose.Schema({
     },
     academicInstitution: {
         type: String,
-        require: true,
-    },
-    shirtSize: {
-        type: String,
-        enum: ['XXXS', 'XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
-        default: 'M',
+        required: true,
     },
     medicalConditions: {
         type: String,
@@ -67,17 +61,35 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: null,
     },
-    isGlobalOrg: {
-        type: Boolean,
-        default: false,
-    },
     hasParticipated: {
         type: Boolean,
         default: false,
     },
-    knowledge: {
+    gender: {
+        type: String,
+        required: true,
+        enum: process.env.GENDERS.split(" "),
+    },
+    shirtSize: {
+        type: String,
+        enum: ['XXXS', 'XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
+        default: 'M',
+    },
+    skills: {
         type: Array,
         default: [],
+    },
+    jobOpportunities: {
+        type: Boolean,
+        default: false,
+    },
+    investments: {
+        type: Boolean,
+        default: false,
+    },
+    isGlobalOrg: {
+        type: Boolean,
+        default: false,
     },
 });
 
