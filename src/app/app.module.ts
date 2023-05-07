@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { TeamInfoComponent } from './team-info/team-info.component';
+import { GameInfoComponent } from './game-info/game-info.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { TeamInfoComponent } from './team-info/team-info.component';
     RegisterComponent,
     HomeComponent,
     TeamInfoComponent,
+    GameInfoComponent,
   ],
   imports: [
     BrowserModule,
