@@ -1,63 +1,62 @@
 <!DOCTYPE html>
 <html>
-
     <head>
         <meta charset="UTF-8" />
         <title>Sign Up</title>
     </head>
-
     <body>
         <div class="container py-5">
             <div class="card signup_v4 mb-30">
                 <div class="card-body">
                     <div class="widgets-wrap float-md-left">
                         <div class="widget-header mr-3">
-                            <button class="icon icon-sm rounded-circle border" id="home"><i class="fa fa-home"></i></button>
+                            <button class="icon icon-sm rounded-circle border" id="home"><i class="fa fa-home center-xy"></i></button>
                         </div>
                     </div> <!-- widgets-wrap.// -->
                     <h4 class="text-center mt-4 mb-4" style="text-transform: uppercase;">Sign Up</h4>
                     <form>
                         <div class="form-row">
+                            <div class="mb-3 col-md-12 relative">
+                                <label class="form-label" for="email">Email *</label>
+                                <input class="form-control error" type="email" placeholder="Type in your email address" id="email" name="email" #email required /> 
+                                <span class="text-error" id="emailError"></span>               
+                            </div>
                             <div class="mb-3 col-md-12"> 
-                                <label class="form-label" for="name"><b>Name</b></label>
+                                <label class="form-label" for="name">Name *</label>
                                 <input class="form-control" type="text" placeholder="Type in your name" id="name" name="name" #name required />
                             </div>
                             <div class="mb-3 col-md-12">
-                                <label class="form-label" for="lastName"><b>Last name</b></label>
+                                <label class="form-label" for="lastName">Last name *</label>
                                 <input class="form-control" type="text" placeholder="Type in your last name" id="lastName" name="lastName" #lastName required />                
                             </div>
                             <div class="mb-3 col-md-12">
-                                <label class="form-label" for="email"><b>Email</b></label>
-                                <input class="form-control" type="email" placeholder="Type in your email address" id="email" name="email" #email
-                                    pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" title="You must type a valid email!" required />                
-                            </div>
-                            <div class="mb-3 col-md-12">
-                                <label class="form-label" for="password"><b>Password</b></label>
-                                <input class="form-control" type="password" placeholder="Type in your password" id="password" name="password" #password required />                
-                            </div>
-                            <div class="mb-3 col-md-12">
-                                <label class="form-label" for="user"><b>Username</b></label>
+                                <label class="form-label" for="username">Username *</label>
                                 <input class="form-control" type="text" placeholder="Type in your username" id="username" name="username" #username required />                
                             </div>
                             <div class="mb-3 col-md-12">
-                                <label class="form-label" for="discord"><b>Discord username</b></label>
+                                <label class="form-label" for="password">Password *</label>
+                                <input class="form-control" type="password" placeholder="Type in your password" id="password" name="password" #password required />                
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label" for="discord">Discord username *</label>
                                 <input class="form-control" type="text" placeholder="Type in your discord username" id="discord" name="discord" #discord required />
                             </div>
                             <div class="mb-3 col-md-12">
-                                <label class="form-label" for="phone"><b>Phone number</b></label>
-                                <input class="form-control" type="tel" placeholder="Type in your phone number" id="phone" name="phone" #phone
-                                    pattern="^\+\d{1,3}\d{1,14}$" title="You must provide a valid phone number!" required />
+                                <label class="form-label" for="phone">Phone number *</label>
+                                <input class="form-control" type="tel" placeholder="Type in your phone number" id="phone" name="phone" #phone required />
+                                <span class="text-error" id="phoneError"></span>               
                             </div>
                             <div class="mb-3 col-md-12">
-                                <label class="form-label" for="birthDate"><b>Birthdate</b></label>
+                                <label class="form-label" for="birthDate">Birthdate *</label>
                                 <input class="form-control" type="date" id="birthDate" name="birthDate" #birthDate required />
+                                <span class="text-error" id="birthError"></span>               
                             </div>
                             <div class="mb-3 col-md-12">
-                                <label class="form-label" for="id"><b>ID</b></label>
-                                <input class="form-control" type="text" placeholder="Type in your national ID" id="id" name="id" #id />
+                                <label class="form-label" for="identification">identification</label>
+                                <input class="form-control" type="text" placeholder="Type in your national ID" id="identification" name="identification" #id />
                             </div>
                             <div class="mb-3 col-md-12">
-                                <label class="form-label" for="academicInstitution"><b>Academic Institution</b></label>
+                                <label class="form-label" for="academicInstitution">Academic Institution *</label>
                                 <input class="form-control" type="text" placeholder="Type in your academic institution" id="academicInstitution"
                                     name="academicInstitution" #academicInstitution required />
                             </div>
@@ -70,26 +69,25 @@
                                 <textarea class="form-control" id="dietaryConditions" name="dietaryConditions" #dietaryConditions></textarea>
                             </div>
                             <div class="mb-3 col-md-12">
-                                <label class="form-label" for="hasParticipated">Have you participated before?</label>
-                                <input class="form-control" type="checkbox" id="hasParticipated" name="hasParticipated" #hasParticipated value="false">
+                                <label class="form-label" for="hasParticipated">
+                                    <input type="checkbox" id="hasParticipated" name="hasParticipated" #hasParticipated>
+                                    Have you participated before?
+                                </label>
                             </div>
                             <div class="mb-3 col-md-12">
-                                <label><b>Gender</b></label>
+                                <label>Gender *</label>
                                 <div>
                                     <label class="form-label" for="female"><input type="radio" id="female" name="gender" #female value="Female"
                                             required /> Female</label>
                                 </div>
                                 <div>
-                                    <label class="form-label" for="male"><input type="radio" id="male" name="gender" #male value="Male" 
-                                            required /> Male</label>
+                                    <label class="form-label" for="male"><input type="radio" id="male" name="gender" #male value="Male"> Male</label>
                                 </div>
                                 <div>
-                                    <label class="form-label" for="nonBinary"><input type="radio" id="nonBinary" name="gender" #nonBinary value="Non-binary"
-                                            required /> Non-binary</label>
+                                    <label class="form-label" for="nonBinary"><input type="radio" id="nonBinary" name="gender" #nonBinary value="Non-binary"> Non-binary</label>
                                 </div>
                                 <div>
-                                    <label class="form-label" for="other"><input type="radio" id="other" name="gender" #other value="Other"
-                                            required /> Other</label>
+                                    <label class="form-label" for="other"><input type="radio" id="other" name="gender" #other value="Other"> Other</label>
                                 </div>
                             </div>
                             <div class="mb-3 col-md-12">
@@ -106,17 +104,51 @@
                                     <option value="XXXL">XXXL</option>
                                 </select>
                             </div>
+                            <label class="mb-3 col-md-12 form-label" id="skillsLabel">Select your skills</label>
+                            <div class="mb-3 col-md-12" id="skillsDiv"></div>
+                            <div class="mb-3 col-md-12">
+                                <button type="button" id="addSkillButton"><i class="icon icon-m fa fa-plus"></i> Add skill</button>
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label>Select when relevant</label>
+                                <div>
+                                    <label class="form-label" for="jobOpportunities">
+                                        <input type="checkbox" id="jobOpportunities" name="additionalInfo" value="jobOpportunities" #jobOpportunities />
+                                        Our team is interested in job opportunities for the games industry
+                                    </label>
+                                </div>
+                                <div>
+                                    <label class="form-label" for="investments">
+                                        <input type="checkbox" id="investments" name="additionalInfo" value="investments" #investments />
+                                        Our team is interested in prospect investors and publishers - powered by Indie Hero
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label" for="receiveEmails">
+                                    <input type="radio" id="receiveEmails" name="receiveEmails" #receiveEmails required>
+                                    By signing up, you accept to receive emails from GameJamPlus to communicate about next steps and future actions. *
+                                </label>
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label" for="orgNoResponsibility">
+                                    <input type="radio" id="orgNoResponsibility" name="orgNoResponsibility" #orgNoResponsibility required />
+                                    By signing up, you understand the Global Organization takes no responsibility for awarding jammers during the 
+                                    First Stage of GameJamPlus, not being obliged to bear any transport, accommodation and food costs for jammers 
+                                    during the Marathon's realization, including all 4 Stages (Continental Finals and Global Final as well). *
+                                </label>
+                            </div>
                         </div>
                         <hr class="mt-3 mb-4">
                         <div class="col-12">
                             <div class="d-flex flex-wrap justify-content-between align-items-center">
                                 <div class="mt-2 mb-3">
-                                    <button class="btn btn-primary full-width" id="login">
+                                    <button type="button" class="btn btn-primary full-width" id="login">
                                         <p>Log In</p>
                                     </button>
                                 </div>
                                 <div class="mt-2 mb-3">
-                                    <button class="btn btn-primary full-width" id="register">
+                                    <button type="button" class="btn btn-primary full-width" id="register">
                                         <p>Register</p>
                                     </button>
                                 </div>
