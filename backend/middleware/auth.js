@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const { TOKEN_KEY } = process.env;
 
 const verifyToken = (req, res, next) => {
-  const token = req.body.token || req.query.token || req.cookies["access-token"];
+  const token = req.body.token || req.query.token || req.cookies["token"];
 
   if (!token) {
     return res.send({
