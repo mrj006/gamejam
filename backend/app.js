@@ -38,4 +38,7 @@ app.post("/register", loginController.registerUser);
 
 app.get("/find-users", gameController.findUsersByQuery);
 
+app.post("/first-stage", gameController.uploadFirstStage);
+
+
 module.exports = app;

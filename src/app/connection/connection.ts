@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user.model';
-import { Game } from '../models/Game.model';
-
+import { Game } from '../models/game.model';
 @Injectable({
     providedIn: 'root'
 })
@@ -24,8 +23,8 @@ export class ConnectionService {
     public findUser(param: string) {
         return this.http.get(`${this.api}/find-users?user=${param}`);
     }
-    public findUser(param: string) {
-        return this.http.post(this.api + "/register", user);
+    public uploadFirstStage(game: Game) {
+        return this.http.post(this.api + "/first-stage", game);
     }
 
 }
