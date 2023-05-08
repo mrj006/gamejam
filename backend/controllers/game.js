@@ -54,12 +54,11 @@ module.exports = class Controller {
 
       return;
     }
-
     const game = new Game({
       _id: gameName,
       teamName,
       responsible,
-      teamMembers,
+      teamMembers
     });
 
     game.save().then(() => {
