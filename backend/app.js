@@ -1,8 +1,5 @@
 require("dotenv").config();
 require("./configs/database");
-const loginController = require('./controllers/login');
-const gameController = require ('./controllers/game')
-const auth = require('./middleware/auth');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -16,6 +13,8 @@ const auth = require('./middleware/auth');
 const categoryController = require("./controllers/category");
 const loginController = require('./controllers/login');
 const themeController = require("./controllers/theme");
+const gameController = require ('./controllers/game')
+
 
 const app = express();
 

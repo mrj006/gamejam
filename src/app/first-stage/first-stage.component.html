@@ -74,6 +74,30 @@
                   <i class="icon icon-m fa fa-plus"></i> Add member
                 </button>
               </div>
+              <!-- Añade el siguiente código dentro del formulario, donde prefieras mostrar el campo de búsqueda -->
+              <div class="mb-3 col-md-3">
+                <label class="form-label" for="searchMember"
+                  ><b>Buscar miembros</b></label
+                >
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="searchMember"
+                    placeholder="Buscar miembro"
+                    name="searchMember"
+                  />
+                  <button
+                    class="btn btn-primary"
+                    type="button"
+                    id="searchBtn"
+                  >
+                    <i class="fa fa-search"></i>
+                  </button>
+                </div>
+                <div id="memberListDiv"></div>
+
+              </div>
             </div>
             <hr class="mt-3 mb-4" />
             <div class="col-12">

@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class FirstStageComponent {
   constructor(private cs: ConnectionService, router: Router) {}
+  users: any[] = []; // Agregar
 
   ngOnInit(): void {
     this.init();
@@ -79,17 +80,31 @@ export class FirstStageComponent {
         this.addMembersButton();
       });
 
-    document
-      .getElementById('addSkillButton')
-      ?.addEventListener('click', (evt) => {
-        this.addMembersButton();
-      });
+    document.getElementById('searchBtn')?.addEventListener('click', (evt) => {
+      let memberListDiv = document.getElementById('memberListDiv');
+      if (memberListDiv) {
+        memberListDiv.innerHTML = '';
+      }
+
+      let usernameInput = document.getElementById(
+        'searchMember'
+      ) as HTMLInputElement;
+      this.fetchUser(usernameInput.value);
+    });
   }
   fetchUser(username: string) {
-    this.cs.findUser("d").subscribe(
+    this.cs.findUser(username).subscribe(
       (res) => {
-        console.log(res);
+        let response = res as Response;
         // Procesa la respuesta aquí
+        if (response.code === 200 && response.users) {
+          this.users = response.users; // Actualizar el array de usuarios
+          this.users.forEach((user: any) => {
+            const email = user._id;
+            const username = user.username;
+            this.addMemberToList(username, email);
+          });
+        }
       },
       (error) => {
         console.error(error);
@@ -97,6 +112,35 @@ export class FirstStageComponent {
       }
     );
   }
+
+  addMemberToList(username: string, email: string) {
+    let memberListDiv = document.getElementById('memberListDiv');
+
+    let memberDiv = document.createElement('div');
+    memberDiv.style.display = 'flex';
+    memberDiv.style.alignItems = 'center';
+    memberDiv.style.justifyContent = 'space-between';
+    memberDiv.style.padding = '8px 16px';
+    memberDiv.style.border = '1px solid #ccc';
+    memberDiv.style.borderRadius = '4px';
+    memberDiv.style.marginBottom = '8px';
+    memberDiv.style.backgroundColor = '#f9f9f9';
+
+    let memberName = document.createElement('span');
+    memberName.innerHTML = username;
+    memberName.style.fontWeight = 'bold';
+    memberName.style.marginRight = '16px';
+
+    let memberEmail = document.createElement('span');
+    memberEmail.innerHTML = email;
+    memberEmail.style.color = '#777';
+
+    memberDiv.appendChild(memberName);
+    memberDiv.appendChild(memberEmail);
+
+    memberListDiv?.appendChild(memberDiv);
+  }
+
   addMembersButton() {
     let div = document.createElement('div');
     div.style.setProperty('margin-bottom', '1%');

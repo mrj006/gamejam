@@ -1,5 +1,6 @@
 export interface Response {
-    message?: string;
-    code: number;
-    token?: string;
+  message?: string;
+  code: number;
+  token?: string;
+  users?: any[];
 }
