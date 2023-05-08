@@ -14,13 +14,7 @@ const gameSchema = new mongoose.Schema({
         return this._id !== null;
       },
   },
-  gameLogo: {
-    data: Buffer,
-    contentType: String,
-    required: function () {
-        return this._id !== null;
-      }
-  },
+
   pitchLink: {
     type: String,
     required: function () {
@@ -41,13 +35,6 @@ const gameSchema = new mongoose.Schema({
   },
   companyName: {
     type: String,
-    required: function () {
-        return this._id !== null;
-      }
-  },
-  teamLogo: {
-    data: Buffer,
-    contentType: String,
     required: function () {
         return this._id !== null;
       }
@@ -91,12 +78,7 @@ const gameSchema = new mongoose.Schema({
   platforms: {
     type: Array,
     default: [],
-  },
-  gameFile: {
-    data: Buffer,
-    contentType: String,
-    required: true,
-  },
+  }
 });
 
 module.exports = mongoose.model("Game", gameSchema);
