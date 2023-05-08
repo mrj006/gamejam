@@ -6,13 +6,15 @@ require('dotenv').config({ path: path.resolve("backend", '.env') });
 const userSchema = new mongoose.Schema({
     _id:{
         type: String,
-        required: true,
     },
     description:{
         type: String,
         required: true,
-    }
-
+    },
+    gamejam:{
+        type: Array,
+        required: true,
+    },
 });
 
 module.exports = mongoose.model("Theme", userSchema);
