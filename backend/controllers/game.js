@@ -32,4 +32,41 @@ module.exports = class Controller {
       });
     }
   };
+
+  static uploadFirstStage = async (req, res) => {
+    let { gameName, teamName, responsible, teamMembers } = req.body;
+
+    if (!(gameName && teamName && responsible && teamMembers)) {
+      res.send({
+        message: "You must fill all required fields!",
+        code: 400,
+      });
+
+      return;
+    }
+
+    let existGameName = await Game.findById(gameName);
+    if (existGameName) {
+      res.send({
+        message: "The name of the game is already registered!",
+        code: 403,
+      });
+
+      return;
+    }
+
+    const game = new Game({
+      _id: gameName,
+      teamName,
+      responsible,
+      teamMembers,
+    });
+
+    game.save().then(() => {
+      res.send({
+        message: "Game registered!",
+        code: 200,
+      });
+    });
+  };
 };
