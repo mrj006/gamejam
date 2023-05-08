@@ -2,25 +2,22 @@ const mongoose = require("mongoose");
 
 //_id is the name, mongoose requirement https://mongoosejs.com/docs/guide.html#_id
 const userSchema = new mongoose.Schema({
-    _id:{
-        type: String,
+    date:{
+        type: Date,
+        required: true,
     },
     description:{
         type: String,
         required: true,
     },
-    sponsor:{
-        type: String,
-        required: true,
-    },
-    rules:{
-        type: String,
-        required: true,
-    },
-    gamejam:{
+    categories:{
         type: Array,
-        required: true,
+        default: [],
+    },
+    themes:{
+        type: Array,
+        default: [],
     },
 });
 
-module.exports = mongoose.model("Category", userSchema);
+module.exports = mongoose.model("GameJam", userSchema);

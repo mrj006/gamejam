@@ -101,13 +101,13 @@ export class RegisterComponent implements OnInit {
             if (emailInput?.value)
                 if (!pattern.test(emailInput.value)) {
                     emailInput.style.borderColor = "#FF0000";
-                    document.getElementById(" emailError")?.style.setProperty("display", "block");
+                    document.getElementById("emailError")?.style.setProperty("display", "block");
                 } else {
                     emailInput.style.borderColor = "#ced4da";
-                    document.getElementById(" emailError")?.style.setProperty("display", "none");
+                    document.getElementById("emailError")?.style.setProperty("display", "none");
                 }
         });
-        document.getElementById(" emailError")?.appendChild(document.createTextNode(environment.EMAIL_ERROR));
+        document.getElementById("emailError")?.appendChild(document.createTextNode(environment.EMAIL_ERROR));
 
         let phoneInput = document.getElementById("phone") as HTMLInputElement;
         phoneInput.setAttribute("pattern", environment.PHONE_REGEX.source);
@@ -118,13 +118,13 @@ export class RegisterComponent implements OnInit {
             if (phoneInput?.value)
                 if (!pattern.test(phoneInput.value)) {
                     phoneInput.style.borderColor = "#FF0000";
-                    document.getElementById(" phoneError")?.style.setProperty("display", "block");
+                    document.getElementById("phoneError")?.style.setProperty("display", "block");
                 } else {
                     phoneInput.style.borderColor = "#ced4da";
-                    document.getElementById(" phoneError")?.style.setProperty("display", "none");
+                    document.getElementById("phoneError")?.style.setProperty("display", "none");
                 }
         });
-        document.getElementById(" phoneError")?.appendChild(document.createTextNode(environment.PHONE_ERROR));
+        document.getElementById("phoneError")?.appendChild(document.createTextNode(environment.PHONE_ERROR));
 
         let  birthDateInput = document.getElementById("birthDate") as HTMLInputElement;
          birthDateInput?.addEventListener("focusout", evt => {
