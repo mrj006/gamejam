@@ -4,7 +4,8 @@ import { Response } from '../connection/response';
 import { Router } from '@angular/router';
 import { Game } from '../models/game.model';
 import { CookieService } from 'ngx-cookie-service';
-
+import jwtDecode from 'jwt-decode';
+import { token } from '../connection/token';
 @Component({
   selector: 'app-team-info',
   templateUrl: './team-info.component.html',
@@ -33,7 +34,6 @@ export class TeamInfoComponent {
   onFileSelected(event: Event): void {
     const fileInput = event.target as HTMLInputElement;
     if (fileInput.files && fileInput.files.length > 0) {
-      this.fileName = fileInput.files[0].name;
       this.selectedFile = fileInput.files[0];
     } else {
       this.fileName = 'Choose file';
@@ -66,21 +66,11 @@ export class TeamInfoComponent {
         aboutTeam = (option as HTMLInputElement).value;
     });
 
-    console.log('Valor de la cookie:', cookieValue);
-
     const [headerB64, payloadB64, signature] = cookieValue.split('.');
-    const headerStr = atob(headerB64);
-    const payloadStr = atob(payloadB64);
-    const headerObj = JSON.parse(headerStr);
-    const payloadObj = JSON.parse(payloadStr);
+    const payloadStr = jwtDecode(cookieValue) as token;
 
-    let userEmail = payloadObj.email;
-    console.log(userEmail);
+    console.log(payloadStr.email);
 
-    if (this.selectedFile) {
-      console.log(this.selectedFile);
-    } else {
-      console.log('No file selected');
-    }
+
   }
 }
