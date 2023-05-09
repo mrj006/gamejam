@@ -56,8 +56,8 @@ export class FirstStageComponent {
     this.cs.findUser(username).subscribe(
       (res) => {
         let response = res as Response;
-        if (response.code === 200 && response.users) {
-          this.users = response.users;
+        if (response.code === 200 && response.data) {
+          this.users = response.data;
           this.users.forEach((user: any) => {
             const email = user._id;
             const username = user.username;
