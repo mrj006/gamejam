@@ -7,7 +7,10 @@ module.exports = class Controller{
 
         ThemeModel.find({gamejam: currentGameJam})
             .then(results => {
-                res.send(results);
+                res.send({
+                    code: 200,
+                    data: results
+                });
             }).catch(e => {
                 console.error(e);
                 res.send({code: 500});
