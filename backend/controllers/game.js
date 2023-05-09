@@ -58,7 +58,7 @@ module.exports = class Controller {
       _id: gameName,
       teamName,
       responsible,
-      teamMembers
+      teamMembers,
     });
 
     game.save().then(() => {
