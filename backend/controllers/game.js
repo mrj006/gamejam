@@ -29,6 +29,22 @@ module.exports = class Controller {
         }
     };
 
+    static findUserGames = async (req, res) => {
+        Game.find({ teamMembers: req.query.user })
+            .then(results => {
+                return res.send({
+                    code: 200,
+                    data: results,
+                });
+            }).catch(e => {
+                console.error(e);
+                return res.send({
+                    message: "Error encountered retrieving your games! Try again later.",
+                    code: 500,
+                })
+            });
+    }
+
     static uploadFirstStage = async (req, res) => {
         let { gameName, teamName, responsible, teamMembers } = req.body;
 

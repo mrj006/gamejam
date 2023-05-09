@@ -50,13 +50,11 @@ app.get('/auth', auth);
 app.post('/login', loginController.loginUser);
 app.post("/register", loginController.registerUser);
 
-
+////// GAME //////
 app.get("/find-users", gameController.findUsersByQuery);
-
+app.get("/getUserGames", gameController.findUserGames);
 app.post("/first-stage", gameController.uploadFirstStage);
-
 app.post("/teamInfo", upload.single("file"), gameController.uploadTeamInfo);
-
 app.post("/gameInfo", upload.single("file"), gameController.uploadGameInfo);
 
 module.exports = app;
