@@ -36,6 +36,7 @@
                   required
                 />
               </div>
+
               <div class="mb-3 col-md-12">
                 <label class="form-label" for="teamName"
                   ><b>Name of the team</b></label
@@ -50,53 +51,59 @@
                   required
                 />
               </div>
-              <div class="mb-3 col-md-12 relative">
-                <label class="form-label" for="email"
-                  ><b>Email of the responsable</b></label
+              <div class="mb-2 col-md-12">
+                <label class="form-label" for="searchResponsable"
+                  ><b>Search for the responsable of the team</b></label
                 >
-                <input
-                  class="form-control error"
-                  type="email"
-                  placeholder="Type in the email of the responsable"
-                  id="email"
-                  name="email"
-                  #email
-                  required
-                />
-                <span class="text-error" id="emailError"></span>
-              </div>
-              <label class="mb-3 col-md-12 form-label" id="skillsLabel"
-                ><b>Select the members</b></label
-              >
-              <div class="mb-3 col-md-12" id="membersDiv"></div>
-              <div class="mb-3 col-md-12">
-                <button type="button" id="addMembersButton">
-                  <i class="icon icon-m fa fa-plus"></i> Add member
-                </button>
-              </div>
-              <!-- Añade el siguiente código dentro del formulario, donde prefieras mostrar el campo de búsqueda -->
-              <div class="mb-3 col-md-3">
-                <label class="form-label" for="searchMember"
-                  ><b>Buscar miembros</b></label
-                >
-                <div class="input-group">
+                <div class="input-group mb-1">
                   <input
                     type="text"
                     class="form-control"
-                    id="searchMember"
-                    placeholder="Buscar miembro"
-                    name="searchMember"
+                    id="searchResponsable"
+                    placeholder="Search for responsable"
+                    name="searchResponsable"
                   />
                   <button
                     class="btn btn-primary"
                     type="button"
-                    id="searchBtn"
+                    id="searchResponsableBtn"
                   >
                     <i class="fa fa-search"></i>
                   </button>
                 </div>
-                <div id="memberListDiv"></div>
+                <div id="responsableListDiv"></div>
+              </div>
 
+              <div class="mb-3 col-md-12">
+                <label class="form-label" for="ResponsableDiv"
+                  ><b>Responsable of the team</b></label
+                >
+                <div id="ResponsableDivMember"></div>
+              </div>
+
+              <div class="mb-2 col-md-12">
+                <label class="form-label" for="searchMember"
+                  ><b>Search members</b></label
+                >
+                <div class="input-group mb-1">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="searchMember"
+                    placeholder="Search for members"
+                    name="searchMember"
+                  />
+                  <button class="btn btn-primary" type="button" id="searchBtn">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </div>
+                <div id="memberListDiv"></div>
+              </div>
+              <div class="mb-3 col-md-12">
+                <label class="form-label" for="memberList"
+                  ><b>Member list</b></label
+                >
+                <div id="teamListDiv"></div>
               </div>
             </div>
             <hr class="mt-3 mb-4" />
@@ -110,7 +117,11 @@
                   </button>
                 </div>
                 <div class="mt-2 mb-3">
-                  <button class="btn btn-primary full-width" id="register">
+                  <button
+                    class="btn btn-primary full-width"
+                    type="button"
+                    id="save"
+                  >
                     <p>Save form</p>
                   </button>
                 </div>
