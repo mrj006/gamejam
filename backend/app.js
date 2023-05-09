@@ -22,9 +22,12 @@ require("./configs/database");
 
 const auth = require('./middleware/auth');
 const categoryController = require("./controllers/category");
+const engineController = require("./controllers/engine");
+const gameController = require ('./controllers/game');
+const genreController = require("./controllers/genre");
 const loginController = require('./controllers/login');
+const platformController = require ('./controllers/platform');
 const themeController = require("./controllers/theme");
-const gameController = require ('./controllers/game')
 
 
 const app = express();
@@ -37,6 +40,15 @@ app.use(cookieParser());
 app.get("/file", (req, res) => {
     res.sendFile(path.resolve("assets", req.query.id));
 });
+
+///// ENGINE /////
+app.get("/engines", engineController.getEngines);
+
+///// GENRE //////
+app.get("/genres", genreController.getGenres);
+
+///// PLATFORM /////
+app.get("/platforms", platformController.getPlatforms);
 
 ///// CATEGORY /////
 app.get("/currentCategories", categoryController.getCurrentCategories);

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 //_id is the name, mongoose requirement https://mongoosejs.com/docs/guide.html#_id
-const userSchema = new mongoose.Schema({
+const categorySchema = new mongoose.Schema({
     _id:{
         type: String,
     },
@@ -23,4 +23,4 @@ const userSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model("Category", userSchema);
+module.exports = mongoose.model("Category", categorySchema);
