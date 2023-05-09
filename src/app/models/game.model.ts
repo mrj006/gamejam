@@ -14,7 +14,7 @@ export interface Game {
     themes: string[];
     genre: string[];
     categories: string[];
-    engine: string[];
+    engine: string;
     platforms: string[];
     gameFile: string;
     pitchLink: string;
