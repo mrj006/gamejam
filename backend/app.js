@@ -6,7 +6,6 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
 const multer = require("multer");
-const path = require("path");
 
 const storage = multer.diskStorage({
     destination: 'assets',
