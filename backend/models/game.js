@@ -39,6 +39,13 @@ const gameSchema = new mongoose.Schema({
         required: function () {
             return this.phase > 0;
         },
+        enum: [
+            "Never worked together before and met in GameJamPlus",
+            "Never worked together before and met before the event",
+            "Some member already worked together and the rest met on GameJamPlus",
+            "Some member already worked together and the rest met before the event",
+            "All members had already worked together"
+        ]
     },
     companyName: {
         type: String,
@@ -85,7 +92,7 @@ const gameSchema = new mongoose.Schema({
         default: [],
     },
     engine: {
-        type: Array,
+        type: String,
         required: function() {
             return this.phase > 1;
         },
