@@ -23,19 +23,19 @@
           <form>
             <div class="form-row">
               <div class="mb-3 col-md-12">
-                <label class="form-label" for="gameName"
-                  ><b>Name of the game</b></label
+                <label class="form-label" for="gameLogo"
+                  ><b>Game logo</b></label
                 >
                 <input
                   class="form-control"
-                  type="text"
-                  placeholder="Type in the name of the game"
-                  id="gameName"
-                  name="gameName"
-                  #gameName
+                  type="file"
+                  id="gameLogo"
+                  name="gameLogo"
+                  accept="image/*"
                   required
                 />
               </div>
+
               <div class="mb-3 col-md-12">
                 <label class="form-label" for="description"
                   ><b>Description</b></label
@@ -160,20 +160,22 @@
               <div class="mb-3 col-md-12">
                 <label><b>Main supported platforms</b></label>
                 <div
-                class="form-check"
-                *ngFor="let platform of platformList; let i = index"
-              >
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  [id]="'platform' + (i + 1)"
-                  name="basicTheme"
-                  [value]="platform"
-                />
-                <label class="form-check-label" [for]="'platform' + (i + 1)">{{
-                  platform
-                }}</label>
-              </div>
+                  class="form-check"
+                  *ngFor="let platform of platformList; let i = index"
+                >
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    [id]="'platform' + (i + 1)"
+                    name="basicTheme"
+                    [value]="platform"
+                  />
+                  <label
+                    class="form-check-label"
+                    [for]="'platform' + (i + 1)"
+                    >{{ platform }}</label
+                  >
+                </div>
               </div>
               <div class="mb-3 col-md-3">
                 <label><b>Basic Genre:</b></label>
@@ -235,6 +237,8 @@
                 <label class="form-label" for="hasParticipated"
                   ><b>Is your game suitable for kids?</b></label
                 >
+              </div>
+              <div class="mb-3 col-md-2">
                 <input
                   class="form-control"
                   type="checkbox"
