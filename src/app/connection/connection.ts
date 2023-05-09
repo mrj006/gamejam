@@ -26,5 +26,11 @@ export class ConnectionService {
     public uploadFirstStage(game: Game) {
         return this.http.post(this.api + "/first-stage", game);
     }
-
+    public getUserGames(param: string) {
+        return this.http.get(`${this.api}/getUserGames?user=${param}`);
+    }
+    public uploadTeamInfo(game: Game, file :File) {
+        let body = {...game, file}
+        return this.http.post(this.api + "/teamInfo", body);
+    }
 }
