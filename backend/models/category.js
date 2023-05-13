@@ -17,10 +17,6 @@ const categorySchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    gamejam:{
-        type: Array,
-        required: true,
-    },
 });
 
-module.exports = mongoose.model("Category", categorySchema);
+module.exports = categorySchema;

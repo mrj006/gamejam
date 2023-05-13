@@ -9,10 +9,6 @@ const themeSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    gamejam:{
-        type: Array,
-        required: true,
-    },
 });
 
-module.exports = mongoose.model("Theme", themeSchema);
+module.exports = themeSchema;
