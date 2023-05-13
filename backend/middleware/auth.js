@@ -21,7 +21,7 @@ const verifyToken = (req, res, next) => {
       code: 401
     });
   }
-  return res.send({code: 200});
+  return next();
 };
 
 module.exports = verifyToken;
