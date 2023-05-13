@@ -1,6 +1,7 @@
 export interface Game {
-    gameName: string;
+    _id: string,
     teamName: string;
+    venue: string;
     responsible: string;
     teamMembers: string[];
     teamLogo: string;
@@ -8,11 +9,12 @@ export interface Game {
     aboutTeam: string;
     companyName: string;
     companyLink: string;
+    gameName: string;
     description: string;
     gameLogo: string;
-    isForUnderage: boolean;
+    isForUnderAge: boolean;
     themes: string[];
-    genre: string[];
+    genres: string[];
     categories: string[];
     engine: string;
     platforms: string[];
