@@ -2,15 +2,26 @@ const EngineModel = require("../models/engine");
 
 module.exports = class Controller{
     static getEngines = async (req, res) => {
-        EngineModel.find()
-            .then(results => {
-                res.send({
-                    code: 200,
-                    data: results
+        try {
+            let engines = await EngineModel.find();
+
+            if (!engines) {
+                return res.status(404).send({
+                    message: "We couldn't find the information you are looking for.",
+                    code: 404,
                 });
-            }).catch(e => {
-                console.error(e);
-                res.send({code: 500});
+            }
+
+            return res.send({
+                code: 200,
+                data: engines,
             });
+        } catch(e) {
+            console.error(e);
+            return res.status(500).send({
+                message: "An error occured while fetching information! Try again later.",
+                code: 500,
+            });
+        }
     }
 };
