@@ -4,31 +4,18 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const path = require('path');
-const multer = require("multer");
-
-const storage = multer.diskStorage({
-    destination: 'assets',
-    filename: function (req, file, cb) {
-        console.log(file);
-        let filename = req.body.id + "_team_logo_" + Date.now() + "." + file.mimetype.split('/')[1];
-        cb(null, filename);
-    }
-});
-const upload = multer({ storage });
 
 require("dotenv").config();
 require("./configs/database");
 
 const auth = require('./middleware/auth');
-const categoryController = require("./controllers/category");
 const engineController = require("./controllers/engine");
-const gameController = require ('./controllers/game');
+const gameController = require('./controllers/game');
+const gamejamController = require("./controllers/gamejam");
 const genreController = require("./controllers/genre");
-const loginController = require('./controllers/login');
 const platformController = require ('./controllers/platform');
-const themeController = require("./controllers/theme");
-
+const userController = require('./controllers/user');
+const venueController = require("./controllers/venue");
 
 const app = express();
 
@@ -37,12 +24,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(cookieParser());
 
-app.get("/file", (req, res) => {
-    res.sendFile(path.resolve("assets", req.query.id));
-});
+///// CATEGORY /////
+app.get("/currentCategories", gamejamController.getCurrentCategories);
 
 ///// ENGINE /////
 app.get("/engines", engineController.getEngines);
+
+////// GAME //////
+app.get("/getUserGames", gameController.findUserGames);
+app.get("/file/:name", gameController.getFile);
+app.post("/firstStage", auth, gameController.uploadFirstStage);
+app.post("/teamInfo", auth, gameController.uploadFile("teamLogos"), gameController.uploadTeamInfo);
+app.post("/gameInfo", auth, gameController.uploadFile("gameLogos"), gameController.uploadGameInfo);
+
+///// GAMEJAM /////
+app.get("/currentGameJam", gamejamController.getCurrentGameJamRoute);
 
 ///// GENRE //////
 app.get("/genres", genreController.getGenres);
@@ -50,22 +46,16 @@ app.get("/genres", genreController.getGenres);
 ///// PLATFORM /////
 app.get("/platforms", platformController.getPlatforms);
 
-///// CATEGORY /////
-app.get("/currentCategories", categoryController.getCurrentCategories);
-
 ////// THEME /////
-app.get("/currentThemes", themeController.getCurrentThemes);
+app.get("/currentThemes", gamejamController.getCurrentThemes);
 
 ////// USER //////
-app.get('/auth', auth);
-app.post('/login', loginController.loginUser);
-app.post("/register", loginController.registerUser);
+app.post('/login', userController.loginUser);
+app.post("/register", userController.registerUser);
+app.get("/findUsers", userController.findUsersByQuery);
 
-////// GAME //////
-app.get("/find-users", gameController.findUsersByQuery);
-app.get("/getUserGames", gameController.findUserGames);
-app.post("/first-stage", gameController.uploadFirstStage);
-app.post("/teamInfo", upload.single("file"), gameController.uploadTeamInfo);
-app.post("/gameInfo", upload.single("file"), gameController.uploadGameInfo);
+///// VENUE /////
+app.get("/currentVenues", venueController.getCurrentVenues);
+app.post("/addVenue", auth, venueController.addVenue);
 
 module.exports = app;
