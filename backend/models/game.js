@@ -2,16 +2,18 @@ const mongoose = require("mongoose");
 const path = require("path");
 require("dotenv").config({ path: path.resolve("backend", ".env") });
 
-//_id is the email, mongoose requirement https://mongoosejs.com/docs/guide.html#_id
 const gameSchema = new mongoose.Schema({
     _id: {
         type: String,
-        match: [new RegExp(process.env.TITLE_REGEX), process.env.TITLE_ERROR],
     },
     teamName: {
         type: String,
         required: true,
         match: [new RegExp(process.env.NAME_REGEX), process.env.NAME_ERROR],
+    },
+    venue: {
+        type: String,
+        required: true,
     },
     responsible: {
         type: String,
@@ -21,6 +23,7 @@ const gameSchema = new mongoose.Schema({
     teamMembers: {
         type: Array,
         required: true,
+        default: undefined,
     },
     teamLogo: {
         type: String,
@@ -57,6 +60,12 @@ const gameSchema = new mongoose.Schema({
             return !!this.companyName;
         },
     },
+    gameName: {
+        type: String,
+        required: function() {
+            return this.phase > 1;
+        },
+    },
     description: {
         type: String,
         required: function() {
@@ -69,7 +78,7 @@ const gameSchema = new mongoose.Schema({
             return this.phase > 1;
         },
     },
-    isForUnderage: {
+    isForUnderAge: {
         type: Boolean,
         required: function() {
             return this.phase > 1;
@@ -80,16 +89,17 @@ const gameSchema = new mongoose.Schema({
         required: function() {
             return this.phase > 1;
         },
+        default: undefined,
     },
-    genre: {
+    genres: {
         type: Array,
         required: function() {
             return this.phase > 1;
         },
+        default: undefined,
     },
     categories: {
         type: Array,
-        default: [],
     },
     engine: {
         type: String,
@@ -102,6 +112,7 @@ const gameSchema = new mongoose.Schema({
         required: function() {
             return this.phase > 1;
         },
+        default: undefined,
     },
     gameFile: {
         type: String,

@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
+const Category = require("./category");
+const Theme = require("./theme");
 
-//_id is the name, mongoose requirement https://mongoosejs.com/docs/guide.html#_id
-const userSchema = new mongoose.Schema({
-    date:{
+//_id is the startDate, mongoose requirement https://mongoosejs.com/docs/guide.html#_id
+const gameJamSchema = new mongoose.Schema({
+    _id:{
         type: Date,
         required: true,
     },
@@ -20,4 +22,4 @@ const userSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model("GameJam", userSchema);
+module.exports = mongoose.model("GameJam", gameJamSchema);

@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const caretakerSchema = new mongoose.Schema(
     {
         mementos: {
-            type: [mementoSchema],
+            type: Array,
             default: [],
         },
         originator: {

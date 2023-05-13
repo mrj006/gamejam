@@ -91,6 +91,30 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    localOrg: {
+        type: Array,
+        default: [],
+    },
+    jammer: {
+        type: Array,
+        default: [],
+    },
+    mentor: {
+        type: Array,
+        default: [],
+    },
+    judge: {
+        type: Array,
+        default: [],
+    },
+    game: {
+        type: Array,
+        default: [],
+    },
+    calification: {
+        type: Array,
+        default: [],
+    },
 });
 
 module.exports = mongoose.model("User", userSchema);
