@@ -1,5 +1,5 @@
 export interface token {
-  email: string;
+  _id: string;
   exp: number;
   iat: number;
 }
