@@ -4,6 +4,8 @@ import { environment } from 'src/environments/environment';
 import { ConnectionService } from '../connection/connection';
 import { Response } from '../connection/response';
 import { CookieService } from 'ngx-cookie-service';
+import jwtDecode from 'jwt-decode';
+import { token } from '../connection/token';
 
 @Component({
     selector: 'app-register',
@@ -19,15 +21,15 @@ export class RegisterComponent implements OnInit {
     }
 
     init() {
-        let home = document.getElementById("home")?.addEventListener('click', evt => {
+        document.getElementById("home")?.addEventListener('click', evt => {
             this.router.navigate(['/']);
         });
 
-        let login = document.getElementById("login")?.addEventListener('click', evt => {
+        document.getElementById("login")?.addEventListener('click', evt => {
             this.router.navigate(['/login']);
         });
 
-        let register = document.getElementById("register")?.addEventListener('click', evt => {
+        document.getElementById("register")?.addEventListener('click', evt => {
             this.register();
         });
 
@@ -144,22 +146,25 @@ export class RegisterComponent implements OnInit {
 
     addSkillInput() {
         let div = document.createElement("div");
+        div.setAttribute("class", "input-group mb-1 col-md-3");
         div.style.setProperty("margin-bottom", "1%");
 
         let skillDivID = crypto.randomUUID();
         div.setAttribute("id",skillDivID);
 
         let skillInput = document.createElement("input");
+        skillInput.setAttribute("class", "form-control");
         skillInput.setAttribute("type", "text");
         skillInput.setAttribute("list", "skillsList");
 
         let deleteSkillButton = document.createElement("button");
+        deleteSkillButton.setAttribute("class", "btn btn-warning");
         let deleteIcon = document.createElement("i");
 
         deleteIcon.setAttribute("class", "icon icon-m fa fa-trash");
 
         deleteSkillButton.appendChild(deleteIcon);
-        deleteSkillButton.style.setProperty("margin-left", "2%");
+        //deleteSkillButton.style.setProperty("margin-left", "2%");
         deleteSkillButton.addEventListener("click", evt => {
             document.getElementById(skillDivID)?.remove();
         });
@@ -204,7 +209,7 @@ export class RegisterComponent implements OnInit {
         skills = Array.from((new Set(skills)).values());
         
         let user = {
-            email,
+            _id: email,
             name,
             lastName,
             username,
@@ -231,7 +236,11 @@ export class RegisterComponent implements OnInit {
             if (response.code == 403) alert("Error: " + response.message + "\nTry logging in instead.");
             if (response.code == 500) alert(response.message);
             if (response.code == 200) {
-                if (response.token) this.cookies.set("token", response.token);
+                if (response.token) {
+                    let payload = jwtDecode(response.token) as token;
+                    let expiration = new Date(payload.exp);       
+                    this.cookies.set("token", response.token, expiration);
+                }
                 this.router.navigate(['/']);
             }          
         });
