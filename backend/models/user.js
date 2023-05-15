@@ -77,7 +77,6 @@ const userSchema = new mongoose.Schema({
     },
     skills: {
         type: Array,
-        default: [],
     },
     jobOpportunities: {
         type: Boolean,
@@ -91,29 +90,23 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    localOrg: {
+    localOrgs: {
         type: Array,
-        default: [],
     },
-    jammer: {
+    jammers: {
         type: Array,
-        default: [],
     },
-    mentor: {
+    mentors: {
         type: Array,
-        default: [],
     },
-    judge: {
+    judges: {
         type: Array,
-        default: [],
     },
-    game: {
+    games: {
         type: Array,
-        default: [],
     },
-    calification: {
+    califications: {
         type: Array,
-        default: [],
     },
 });
 

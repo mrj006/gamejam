@@ -5,21 +5,15 @@ const Theme = require("./theme");
 //_id is the startDate, mongoose requirement https://mongoosejs.com/docs/guide.html#_id
 const gameJamSchema = new mongoose.Schema({
     _id:{
-        type: Date,
+        type: String,
         required: true,
     },
     description:{
         type: String,
         required: true,
     },
-    categories:{
-        type: Array,
-        default: [],
-    },
-    themes:{
-        type: Array,
-        default: [],
-    },
+    categories: [Category],
+    themes: [Theme],
 });
 
 module.exports = mongoose.model("GameJam", gameJamSchema);

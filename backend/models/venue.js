@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// _id wll be country + city
 const venueSchema = new mongoose.Schema({
     _id: {
         type: String,
@@ -16,23 +15,22 @@ const venueSchema = new mongoose.Schema({
         required: true,
     },
     gamejam: {
-        type: Array,
+        type: String,
         required: true,
-        default: undefined,
     },
-    localOrg: {
+    localOrgs: {
         type: Array,
         default: [],
     },
-    jammer: {
+    jammers: {
         type: Array,
         default: [],
     },
-    mentor: {
+    mentors: {
         type: Array,
         default: [],
     },
-    judge: {
+    judges: {
         type: Array,
         default: [],
     },
