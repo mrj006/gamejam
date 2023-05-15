@@ -25,13 +25,14 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(cookieParser());
 
 ///// CATEGORY /////
-app.get("/currentCategories", gamejamController.getCurrentCategories);
+app.get("/currentCategories", gamejamController.getCurrentCategoriesRoute);
 
 ///// ENGINE /////
 app.get("/engines", engineController.getEngines);
 
 ////// GAME //////
 app.get("/getUserGames", gameController.findUserGames);
+app.get("/getCurrentUserGame", gameController.getCurrentUserGameRoute);
 app.get("/file/:name", gameController.getFile);
 app.post("/firstStage", auth, gameController.uploadFirstStage);
 app.post("/teamInfo", auth, gameController.uploadFile("teamLogos"), gameController.uploadTeamInfo);
@@ -47,12 +48,13 @@ app.get("/genres", genreController.getGenres);
 app.get("/platforms", platformController.getPlatforms);
 
 ////// THEME /////
-app.get("/currentThemes", gamejamController.getCurrentThemes);
+app.get("/currentThemes", gamejamController.getCurrentThemesRoute);
 
 ////// USER //////
 app.post('/login', userController.loginUser);
 app.post("/register", userController.registerUser);
 app.get("/findUsers", userController.findUsersByQuery);
+app.get("/getUser", userController.getUser);
 
 ///// VENUE /////
 app.get("/currentVenues", venueController.getCurrentVenues);
