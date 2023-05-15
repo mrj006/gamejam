@@ -2,23 +2,17 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
 const jwtDecode = require("jwt-decode");
+const errorHandling = require("../configs/error");
 
 module.exports = class Controller{    
     static registerUser = async (req, res) => {
         let { _id, password, name, lastName, username, discord, phone, birthDate, identification, academicInstitution, 
             medicalConditions, dietaryConditions, hasParticipated, gender, shirtSize, skills, jobOpportunities, investments } = req.body;
         
-        if (!(_id && name && lastName && username && password && discord && phone && gender && birthDate && academicInstitution)) {
-            return res.status(400).send({
-                message: "You must fill all required fields!",
-                code: 400
-            });
-        }
-    
         try {
             let emailExists = await User.findById(_id);
             if (emailExists) {
-                return res.status(403).send({
+                return res.send({
                     message: "Email is already registered!",
                     code: 403
                 });
@@ -26,7 +20,7 @@ module.exports = class Controller{
         
             let userExists = await User.findOne({ username });
             if (userExists) {
-                return res.status(403).send({
+                return res.send({
                     message: "User already exists!",
                     code: 403
                 });
@@ -70,11 +64,7 @@ module.exports = class Controller{
                 token: token,
             });
         } catch(e) {
-            console.error(e);
-            return res.status(500).send({
-                message: "An error happened while creating your account! Please try again later.",
-                code: 500
-            });
+            errorHandling(e, res);
         }
     };
 
@@ -82,7 +72,7 @@ module.exports = class Controller{
         let { _id, password } = req.body;
     
         if (!(_id && password)) {
-            return res.status(400).send({
+            return res.send({
                 message: "You must fill all required fields!",
                 code: 400
             });
@@ -92,7 +82,7 @@ module.exports = class Controller{
             const user = await User.findById(_id);
 
             if (!(user && (await bcrypt.compare(password, user.password)))) {
-                return res.status(401).send({
+                return res.send({
                     message: "Invalid credentials!",
                     code: 401
                 });
@@ -111,11 +101,7 @@ module.exports = class Controller{
                 token: token,
             });
         } catch(e) {
-            console.error(e);
-            return res.status(500).send({
-                message: "An error happened while logging you in! Please try again later.",
-                code: 500
-            })
+            errorHandling(e, res);
         }
     };
 
@@ -127,7 +113,7 @@ module.exports = class Controller{
             let users = await User.find({ $or: [{_id: regex}, {username: regex}]}).limit(10);
 
             if (!users) {
-                return res.status(404).send({
+                return res.send({
                     message: "No users found!",
                     code: 404,
                 });
@@ -138,12 +124,7 @@ module.exports = class Controller{
                 code: 200,
             });
         } catch (error) {
-            console.error(error);
-            return res.status(500).send({
-                message:
-                    "Error encountered while searching for users! Try again later.",
-                code: 500,
-            });
+            errorHandling(e, res);
         }
     };
 
@@ -151,17 +132,10 @@ module.exports = class Controller{
         let { token, _id, password, name, lastName, username, discord, phone, birthDate, identification, academicInstitution, 
             medicalConditions, dietaryConditions, hasParticipated, gender, shirtSize, skills, jobOpportunities, investments } = req.body;
         
-        if (!(_id && name && lastName && username && password && discord && phone && gender && birthDate && academicInstitution)) {
-            return res.status(400).send({
-                message: "You must fill all required fields!",
-                code: 400
-            });
-        }
-    
         const payload = jwtDecode(token);
 
         if (_id != payload._id) {
-            return res.status(403).send({
+            return res.send({
                 message: "Invalid token! Sign in again.",
                 code: 403
             });
@@ -171,14 +145,14 @@ module.exports = class Controller{
             let user = await User.findById(_id);
 
             if (!user) {
-                return res.status(400).send({
+                return res.send({
                     message: "You must provide a valid email!",
                     code: 400
                 });
             }
 
             if (username != user.username) {
-                return res.status(403).send({
+                return res.send({
                     message: "You cannot change your username!",
                     code: 403
                 });
@@ -211,11 +185,28 @@ module.exports = class Controller{
                 code: 200,
             });
         } catch(e) {
-            console.error(e);
-            return res.status(500).send({
-                message: "An error occurred while saving your changes! Try again later.",
-                code: 500,
-            });
+            errorHandling(e, res);
         }
     };
+
+    static getUser = async (req, res) => {
+        try {
+            let user = await User.findById(req.query._id);
+
+            if (!user) {
+                return res.send({
+                    message: "The provided user was not found!",
+                    code: 404,
+                });
+            }
+
+            return res.send({
+                code: 200,
+                data: [user],
+            });
+        } catch(e) {
+            errorHandling(e, res);
+        }
+
+    }
 }

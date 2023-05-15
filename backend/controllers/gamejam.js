@@ -3,25 +3,18 @@ const GameJam = require("../models/gamejam");
 module.exports = class Controller{
     static async getCurrentGameJam() {
         try {
-            let gamejam = await GameJam.findOne({}).sort('-_id');
-
-            if (!gamejam) {
-                return null;
-            }
-
-            return gamejam;
+            return await GameJam.findOne({}).sort('-_id');
         } catch(e) {
-            console.error(e);
-            return null;
+            console.log(e);
         }
     };
 
     static getCurrentGameJamRoute = async (req, res) => {
         try {
-            let gamejam = await GameJam.findOne({}).sort('-_id');
+            let gamejam = await this.getCurrentGameJam();
 
             if (!gamejam) {
-                return res.status(404).send({
+                return res.send({
                     message: "We couldn't find the information you are looking for.",
                     code: 404,
                 });
@@ -32,20 +25,24 @@ module.exports = class Controller{
                 data: [gamejam],
             });
         } catch(e) {
-            console.error(e);
-            return res.status(500).send({
-                message: "An error occured while fetching information! Try again later.",
-                code: 500,
-            });
+            errorHandling(e, res);
         }
     }
 
-    static getCurrentCategories = async (req, res) => {
+    static async getCurrentCategories() {
         try {
-            let gamejam = await GameJam.findOne({}).sort('-_id');
+            return (await GameJam.findOne({}).sort('-_id')).categories;
+        } catch(e) {
+            console.log(e);
+        }
+    }
 
-            if (!(gamejam && gamejam.categories)) {
-                return res.status(404).send({
+    static getCurrentCategoriesRoute = async (req, res) => {
+        try {
+            let categories = await this.getCurrentCategories();
+
+            if (!categories) {
+                return res.send({
                     message: "We couldn't find the information you are looking for.",
                     code: 404,
                 });
@@ -53,23 +50,35 @@ module.exports = class Controller{
 
             return res.send({
                 code: 200,
-                data: gamejam.categories,
+                data: categories,
             });
         } catch(e) {
-            console.error(e);
-            return res.status(500).send({
-                message: "An error occured while fetching information! Try again later.",
-                code: 500,
-            });
+            errorHandling(e, res);
         }
     };
 
-    static getCurrentThemes = async (req, res) => {
+    static async getCurrentCategory(_id) {
         try {
-            let gamejam = await GameJam.findOne({}).sort('-_id');
+            return (await this.getCurrentGameJam()).categories.id(_id);
+        } catch(e) {
+            console.log(e);
+        }
+    }
 
-            if (!(gamejam && gamejam.themes)) {
-                return res.status(404).send({
+    static async getCurrentThemes() {
+        try {
+            return (await GameJam.findOne({}).sort('-_id')).themes;
+        } catch(e) {
+            console.log(e);
+        }
+    }
+
+    static getCurrentThemesRoute = async (req, res) => {
+        try {
+            let themes = await this.getCurrentThemes();
+
+            if (!themes) {
+                return res.send({
                     message: "We couldn't find the information you are looking for.",
                     code: 404,
                 });
@@ -77,14 +86,18 @@ module.exports = class Controller{
 
             return res.send({
                 code: 200,
-                data: gamejam.themes,
+                data: themes,
             });
         } catch(e) {
-            console.error(e);
-            return res.send({
-                message: "An error occured while fetching information! Try again later.",
-                code: 500,
-            });
+            errorHandling(e, res);
         }
     };
+
+    static async getCurrentTheme(_id) {
+        try {
+            return (await this.getCurrentGameJam()).themes.id(_id);
+        } catch(e) {
+            console.log(e);
+        }
+    }
 };

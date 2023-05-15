@@ -18,7 +18,7 @@ function errorHandlingAux(err) {
         case "ValidationError":
             message = "The following attributes are not valid:\n";
             for (let key in err.errors) {
-                let value = err.errors[key].value ? ", using the provided value: " + err.errors[key].value : ", as you did not provide a value!"; 
+                let value = (err.errors[key].value == true) ? ", using the provided value: " + err.errors[key].value : ", as you did not provide a value!"; 
                 message += err.errors[key].path + value + "\n";
             }
             return {
@@ -37,7 +37,7 @@ function errorHandlingAux(err) {
 function errorHandling(err, res) {
     let error = errorHandlingAux(err);
             
-    return res.status(error.code).send(error);
+    return res.send(error);
 }
 
 module.exports = errorHandling;

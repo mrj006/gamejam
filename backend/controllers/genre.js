@@ -1,12 +1,20 @@
-const GenreModel = require("../models/genre");
+const Genre = require("../models/genre");
 
 module.exports = class Controller{
+    static async getGenre(_id) {
+        try {
+            return await Genre.findById(_id);
+        } catch(e) {
+            console.log(e);
+        }
+    }
+
     static getGenres = async (req, res) => {
         try {
-            let genres = await GenreModel.find();
+            let genres = await Genre.find();
 
             if (!genres) {
-                return res.status(404).send({
+                return res.send({
                     message: "We couldn't find the information you are looking for.",
                     code: 404,
                 });
@@ -17,11 +25,7 @@ module.exports = class Controller{
                 data: genres,
             });
         } catch(e) {
-            console.error(e);
-            return res.status(500).send({
-                message: "An error occured while fetching information! Try again later.",
-                code: 500,
-            });
+            errorHandling(e, res);
         }
     }
 };

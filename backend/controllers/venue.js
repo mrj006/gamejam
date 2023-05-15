@@ -1,5 +1,6 @@
 const GameJam = require("./gamejam");
 const Venue = require("../models/venue");
+const errorHandling = require("../configs/error");
 
 module.exports = class Controller{
     static getCurrentVenues = async (req, res) => {
@@ -7,7 +8,7 @@ module.exports = class Controller{
             let gamejam = await GameJam.getCurrentGameJam();
 
             if (!gamejam) {
-                return res.status(404).send({
+                return res.send({
                     message: "We couldn't find the information you are looking for.",
                     code: 404,
                 });
@@ -20,11 +21,7 @@ module.exports = class Controller{
                 data: venues,
             });
         } catch(e) {
-            console.error(e);
-            return res.status(500).send({
-                message: "An error occured while fetching information! Try again later.",
-                code: 500,
-            });
+            errorHandling(e, res);
         }
     };
 
@@ -40,13 +37,13 @@ module.exports = class Controller{
                     code: 404,
                 });
             }
-            let _id = country + "/" + city;
+            let _id = crypto.randomUUID();
 
-            let existingVenue = await Venue.findById(_id);
+            let existingVenue = await Venue.find({city, country, gamejam});
 
-            if (existingVenue) {
-                return res.status(403).send({
-                    message: "Venue already exists! Add a new GameJam to the existing one instead.",
+            if (existingVenue == true) {
+                return res.send({
+                    message: "Venue already exists!",
                     code: 403
                 });
             }
@@ -55,7 +52,7 @@ module.exports = class Controller{
                 _id,
                 city,
                 country,
-                gamejam: [gamejam._id],
+                gamejam: gamejam._id,
             });
 
             await venue.save();
@@ -65,11 +62,7 @@ module.exports = class Controller{
                 code: 200,
             });
         } catch(e) {
-            console.error(e);
-            return res.status(500).send({
-                message: "An error occured while fetching information! Try again later.",
-                code: 500,
-            });
+            errorHandling(e, res);
         }
     };
 }

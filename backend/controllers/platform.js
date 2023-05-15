@@ -1,12 +1,20 @@
-const PlatformModel = require("../models/platform");
+const Platform = require("../models/platform");
 
 module.exports = class Controller{
+    static async getPlatform(_id) {
+        try {
+            return await Platform.findById(_id);
+        } catch(e) {
+            console.log(e);
+        }
+    }
+
     static getPlatforms = async (req, res) => {
         try {
-            let platforms = await PlatformModel.find();
+            let platforms = await Platform.find();
 
             if (!platforms) {
-                return res.status(404).send({
+                return res.send({
                     message: "We couldn't find the information you are looking for.",
                     code: 404,
                 });
@@ -17,11 +25,7 @@ module.exports = class Controller{
                 data: platforms,
             });
         } catch(e) {
-            console.error(e);
-            return res.status(500).send({
-                message: "An error occured while fetching information! Try again later.",
-                code: 500,
-            });
+            errorHandling(e, res);
         }
     }
 };
