@@ -4,7 +4,6 @@ import { environment } from 'src/environments/environment';
 import { User } from '../models/user.model';
 import { Game } from '../models/game.model';
 import { Response } from './response';
-import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
     providedIn: 'root'
@@ -12,9 +11,8 @@ import { CookieService } from 'ngx-cookie-service';
 
 export class ConnectionService {
     private api = environment.BACKEND;
-    private token = this.cookies.get("token");
 
-    constructor(private http: HttpClient, private cookies: CookieService) {}
+    constructor(private http: HttpClient) {}
 
     /////////////////////////////// USER ///////////////////////////////
 
@@ -52,19 +50,27 @@ export class ConnectionService {
         return this.http.get<Response>(this.api + "/platforms");
     }
 
-    public getUserGames(param: string) {
-        return this.http.get<Response>(`${this.api}/getUserGames?user=${param}`);
+    public getUserGames(user: string) {
+        return this.http.get<Response>(`${this.api}/getUserGames?user=${user}`);
     }
 
-    public uploadFirstStage(game: Game) {
-        return this.http.post<Response>(this.api + "/firstStage?token=" + this.token, game);
+    public getUser(user: string) {
+        return this.http.get<Response>(this.api + "/getUser?_id=" + user);
     }
 
-    public uploadTeamInfo(form: FormData) {
-        return this.http.post<Response>(this.api + "/teamInfo?token=" + this.token, form);
+    public getCurrentUserGame(user: string) {
+        return this.http.get<Response>(this.api + "/getCurrentUserGame?_id=" + user);
     }
 
-    public uploadGameInfo(form: FormData) {
-        return this.http.post<Response>(this.api + "/gameInfo?token=" + this.token, form);
+    public uploadFirstStage(game: Game, token: string) {
+        return this.http.post<Response>(this.api + "/firstStage?token=" + token, game);
+    }
+
+    public uploadTeamInfo(form: FormData, token: string) {
+        return this.http.post<Response>(this.api + "/teamInfo?token=" + token, form);
+    }
+
+    public uploadGameInfo(form: FormData, token: string) {
+        return this.http.post<Response>(this.api + "/gameInfo?token=" + token, form);
     }
 }
