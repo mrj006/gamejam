@@ -4,8 +4,7 @@ require('dotenv').config({ path: path.resolve("backend", '.env') });
 const { MONGO_URI } = process.env;
 
 mongoose.connect(MONGO_URI)
-    .then(connection => {
-        module.exports = connection;
+    .then(() => {
         console.log("Connected to MongoDB");
     })
     .catch((err) =>{
