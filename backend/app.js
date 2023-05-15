@@ -33,7 +33,7 @@ app.get("/engines", engineController.getEngines);
 ////// GAME //////
 app.get("/getUserGames", gameController.findUserGames);
 app.get("/getCurrentUserGame", gameController.getCurrentUserGameRoute);
-app.get("/file/:name", gameController.getFile);
+app.get("/file", gameController.getFile);
 app.post("/firstStage", auth, gameController.uploadFirstStage);
 app.post("/teamInfo", auth, gameController.uploadFile("teamLogos"), gameController.uploadTeamInfo);
 app.post("/gameInfo", auth, gameController.uploadFile("gameLogos"), gameController.uploadGameInfo);
