@@ -2,9 +2,9 @@ export interface Venue {
     _id: string;
     city: string;
     country: string;
-    gamejam: Date[];
-    localOrg: string[];
-    jammer: string[];
-    mentor: string[];
-    judge: string[];
+    gamejams: Date[];
+    localOrgs: string[];
+    jammers: string[];
+    mentors: string[];
+    judges: string[];
 }
