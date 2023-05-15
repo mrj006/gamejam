@@ -5,7 +5,7 @@ import { ConnectionService } from '../connection/connection';
 import { Response } from '../connection/response';
 import { CookieService } from 'ngx-cookie-service';
 import jwtDecode from 'jwt-decode';
-import { token } from '../connection/token';
+import { Token } from '../connection/token';
 
 @Component({
     selector: 'app-register',
@@ -237,7 +237,7 @@ export class RegisterComponent implements OnInit {
             if (response.code == 500) alert(response.message);
             if (response.code == 200) {
                 if (response.token) {
-                    let payload = jwtDecode(response.token) as token;
+                    let payload = jwtDecode(response.token) as Token;
                     let expiration = new Date(payload.exp);       
                     this.cookies.set("token", response.token, expiration);
                 }

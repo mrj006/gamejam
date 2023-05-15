@@ -1,274 +1,107 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <title>Game information</title>
-  </head>
+</head>
 
-  <body>
+<body>
     <div class="container py-5">
-      <div class="card signup_v4 mb-30">
-        <div class="card-body">
-          <div class="widgets-wrap float-md-left">
-            <div class="widget-header mr-3">
-              <button class="icon icon-sm rounded-circle border" id="home">
-                <i class="fa fa-home"></i>
-              </button>
-            </div>
-          </div>
-          <!-- widgets-wrap.// -->
-          <h4 class="text-center mt-4 mb-4" style="text-transform: uppercase">
-            Game information
-          </h4>
-          <form>
-            <div class="form-row">
-              <div class="mb-3 col-md-12">
-                <label class="form-label" for="gameLogo"
-                  ><b>Game logo</b></label
-                >
-                <input
-                  class="form-control"
-                  type="file"
-                  id="gameLogo"
-                  name="gameLogo"
-                  accept="image/*"
-                  required
-                />
-              </div>
+        <div class="card signup_v4 mb-30">
+            <div class="card-body">
+                <div class="widgets-wrap float-md-left">
+                    <div class="widget-header mr-3">
+                        <button class="icon icon-sm rounded-circle border" id="home">
+                            <i class="fa fa-home"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- widgets-wrap.// -->
+                <h4 class="text-center mt-4 mb-4" style="text-transform: uppercase">
+                    Game information
+                </h4>
+                <form>
+                    <div class="form-row">
+                        <div class="mb-3 col-md-12">
+                            <label class="form-label" for="gameName">Name of the game *</label>
+                            <input class="form-control" type="text" placeholder="Type in the name of the game"
+                                id="gameName" name="gameName" #gameName required />
+                        </div>
+                        <div class="mb-3 col-md-3">
+                            <label class="form-label" for="gameLogoDiv">Game logo *</label>
+                            <div id="gameLogoDiv">
+                                <img id="gameLogo">
+                            </div>
+                            <input class="form-control" type="file" id="gameLogoInput" name="gameLogoInput" #gameLogoInput required />
+                        </div>
+                        <div class="mb-3 col-md-12">
+                            <label class="form-label" for="description">Description *</label>
+                            <textarea class="form-control" id="description" name="description" #description></textarea>
+                        </div>
+                        <div class="mb-3 col-md-12" id="themesDiv">
+                            <label>Select the theme(s) of your game *</label>
+                        </div>
+                        <div class="mb-3 col-md-12" id="categoriesDiv">
+                            <label>Will your game compete in any of these categories?</label>
+                        </div>
+                        <div class="mb-3 col-md-12" id="platformsDiv">
+                            <label>Main supported platforms *</label>
+                        </div>
+                        <div class="mb-3 col-md-3">
+                            <label>Game genre: *</label>
+                            <select id="genreSelect" class="form-control" multiple>
+                            </select>
+                        </div>
+                        <!-- Botón para agregar opciones seleccionadas -->
+                        <div class="mb-3 col-md-12">
+                            <button id="addSelected" class="btn btn-primary" type="button">
+                                Add selected
+                            </button>
+                        </div>
+                        <!-- Lista de opciones seleccionadas -->
+                        <div class="mb-3 col-md-3">
+                            <label>Selected Genres: *</label>
+                            <select id="selectedGenres" class="form-control" multiple>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-md-12">
+                            <button class="btn btn-danger" id="deleteSelected" type="button">
+                                Delete selected
+                            </button>
+                        </div>
 
-              <div class="mb-3 col-md-12">
-                <label class="form-label" for="description"
-                  ><b>Description</b></label
-                >
-                <textarea
-                  class="form-control"
-                  id="description"
-                  name="description"
-                  #description
-                ></textarea>
-              </div>
-              <div class="mb-3 col-md-12">
-                <label><b>Select the theme(s) of your game</b></label>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="theme1"
-                    name="basicTheme"
-                    value="Theme 1"
-                  />
-                  <label class="form-check-label" for="theme1">Theme 1</label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="theme2"
-                    name="basicTheme"
-                    value="Theme 2"
-                  />
-                  <label class="form-check-label" for="theme2">Theme 2</label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="theme3"
-                    name="basicTheme"
-                    value="Theme 3"
-                  />
-                  <label class="form-check-label" for="theme3">Theme 3</label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="theme4"
-                    name="basicTheme"
-                    value="Theme 4"
-                  />
-                  <label class="form-check-label" for="theme4">Theme 4</label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="theme5"
-                    name="basicTheme"
-                    value="Theme 5"
-                  />
-                  <label class="form-check-label" for="theme5">Theme 5</label>
-                </div>
-              </div>
-              <div class="mb-3 col-md-12">
-                <label
-                  ><b
-                    >Will your game compete in any of these categories?</b
-                  ></label
-                >
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="cat1"
-                    name="basicTheme"
-                    value="Theme 1"
-                  />
-                  <label class="form-check-label" for="cat1">categorie 1</label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="cat2"
-                    name="basicTheme"
-                    value="Theme 2"
-                  />
-                  <label class="form-check-label" for="cat2">categorie 2</label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="cat3"
-                    name="basicTheme"
-                    value="Theme 3"
-                  />
-                  <label class="form-check-label" for="cat3">categorie 3</label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="cat4"
-                    name="basicTheme"
-                    value="Theme 4"
-                  />
-                  <label class="form-check-label" for="cat4">categorie 4</label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="cat5"
-                    name="basicTheme"
-                    value="Theme 5"
-                  />
-                  <label class="form-check-label" for="cat5">categorie 5</label>
-                </div>
-              </div>
-              <div class="mb-3 col-md-12">
-                <label><b>Main supported platforms</b></label>
-                <div
-                  class="form-check"
-                  *ngFor="let platform of platformList; let i = index"
-                >
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    [id]="'platform' + (i + 1)"
-                    name="basicTheme"
-                    [value]="platform"
-                  />
-                  <label
-                    class="form-check-label"
-                    [for]="'platform' + (i + 1)"
-                    >{{ platform }}</label
-                  >
-                </div>
-              </div>
-              <div class="mb-3 col-md-3">
-                <label><b>Basic Genre:</b></label>
-                <select id="themesSelect" class="form-control" multiple>
-                  <option *ngFor="let genre of genreList" [value]="genre">
-                    {{ genre }}
-                  </option>
-                </select>
-              </div>
-              <!-- Botón para agregar opciones seleccionadas -->
-              <div class="mb-3 col-md-12">
-                <button
-                  id="addSelected"
-                  class="btn btn-primary"
-                  type="button"
-                  (click)="addSelectedThemes()"
-                >
-                  Add Selected
-                </button>
-              </div>
-              <!-- Lista de opciones seleccionadas -->
-              <div class="mb-3 col-md-3">
-                <label><b>Selected Themes:</b></label>
-                <ul id="selectedThemes" class="list-group">
-                  <li
-                    class="list-group-item"
-                    *ngFor="let theme of selectedThemes"
-                  >
-                    {{ theme }}
-                    <button
-                      class="btn btn-danger btn-sm float-right"
-                      (click)="removeTheme(theme)"
-                    >
-                      x
-                    </button>
-                  </li>
-                </ul>
-              </div>
-
-              <div class="mb-3 col-md-12">
-                <label><b>Which game engine was used?</b></label>
-                <div
-                  class="form-check"
-                  *ngFor="let engine of engineList; let i = index"
-                >
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    [id]="'engine' + (i + 1)"
-                    name="basicTheme"
-                    [value]="engine"
-                  />
-                  <label class="form-check-label" [for]="'engine' + (i + 1)">{{
-                    engine
-                  }}</label>
-                </div>
-              </div>
-              <div class="mb-3 col-md-12">
-                <label class="form-label" for="hasParticipated"
-                  ><b>Is your game suitable for kids?</b></label
-                >
-              </div>
-              <div class="mb-3 col-md-2">
-                <input
-                  class="form-control"
-                  type="checkbox"
-                  id="hasParticipated"
-                  name="hasParticipated"
-                  #hasParticipated
-                  value="false"
-                />
-              </div>
+                        <div class="mb-3 col-md-12" id="enginesDiv">
+                            <label>Which game engine was used? *</label>
+                        </div>
+                        <div class="mb-3 col-md-12">
+                            <label class="form-label" for="isForUnderAge">
+                                <input type="checkbox" id="isForUnderAge" name="isForUnderAge" #isForUnderAge>
+                                 Is your game suitable for kids?
+                            </label>
+                        </div>
+                        <div class="mb-3 col-md-2">
+                        </div>
+                    </div>
+                    <hr class="mt-3 mb-4" />
+                    <div class="col-12">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center">
+                            <div class="mt-2 mb-3">
+                                <button class="btn btn-primary full-width" id="back" type="button">
+                                    <p>Back</p>
+                                </button>
+                            </div>
+                            <div class="mt-2 mb-3">
+                                <button class="btn btn-primary full-width" id="save" type="button">
+                                    <p>Save</p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <hr class="mt-3 mb-4" />
-            <div class="col-12">
-              <div
-                class="d-flex flex-wrap justify-content-between align-items-center"
-              >
-                <div class="mt-2 mb-3">
-                  <button class="btn btn-primary full-width" id="login">
-                    <p>Back</p>
-                  </button>
-                </div>
-                <div class="mt-2 mb-3">
-                  <button class="btn btn-primary full-width" id="register">
-                    <p>Save form</p>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </form>
         </div>
-      </div>
     </div>
-  </body>
+</body>
+
 </html>

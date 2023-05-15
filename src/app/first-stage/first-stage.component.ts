@@ -3,276 +3,219 @@ import { ConnectionService } from '../connection/connection';
 import { Response } from '../connection/response';
 import { Router } from '@angular/router';
 import { Game } from '../models/game.model';
+import { User } from '../models/user.model';
+import { Venue } from '../models/venue.model';
+import { firstValueFrom } from 'rxjs';
+import jwtDecode from 'jwt-decode';
+import { CookieService } from 'ngx-cookie-service';
+import { Token } from '../connection/token';
+
 @Component({
-  selector: 'app-first-stage',
-  templateUrl: './first-stage.component.html',
-  styleUrls: ['../../styles.css'],
+    selector: 'app-first-stage',
+    templateUrl: './first-stage.component.html',
+    styleUrls: ['../../styles.css'],
 })
+
 export class FirstStageComponent {
-  constructor(private cs: ConnectionService, private router: Router) {}
-  users: any[] = [];
-  team: any[] = [];
-  responsable: any = null;
+    private token: string;
+    constructor(private cs: ConnectionService, private cookies: CookieService, private router: Router) {
+        this.token = this.cookies.get('token');
+    }
 
-  ngOnInit(): void {
-    this.init();
-  }
+    ngOnInit(): void {
+        this.init();
+    }
 
-  init() {
-    document.getElementById('searchBtn')?.addEventListener('click', (evt) => {
-      let memberListDiv = document.getElementById('memberListDiv');
-      if (memberListDiv) {
-        memberListDiv.innerHTML = '';
-      }
-
-      let usernameInput = document.getElementById(
-        'searchMember'
-      ) as HTMLInputElement;
-      this.fetchUser(usernameInput.value, this.addMemberToList);
-    });
-
-    document
-      .getElementById('searchResponsableBtn')
-      ?.addEventListener('click', (evt) => {
-        let responsableListDiv = document.getElementById('responsableListDiv');
-        if (responsableListDiv) {
-          responsableListDiv.innerHTML = '';
+    async init() {        
+        let payload = jwtDecode(this.token) as Token;
+        
+        if (!payload) {
+            alert("You must be properly signed in before submitting a game!");
+            this.router.navigate(['/']);
         }
 
-        let usernameInput = document.getElementById(
-          'searchResponsable'
-        ) as HTMLInputElement;
-        this.fetchUser(usernameInput.value, this.addResponsable);
-      });
-
-    document.getElementById('save')?.addEventListener('click', (evt) => {
-      this.upload();
-    });
-  }
-  fetchUser(
-    username: string,
-    callback: (username: string, email: string) => void
-  ) {
-    this.cs.findUser(username).subscribe(
-      (res) => {
-        let response = res as Response;
-        if (response.code === 200 && response.data) {
-          this.users = response.data;
-          this.users.forEach((user: any) => {
-            const email = user._id;
-            const username = user.username;
-            callback.bind(this)(username, email);
-          });
+        let games = (await firstValueFrom(this.cs.getCurrentUserGame(payload._id))).data as Game[];
+        
+        if (games) {
+            alert("You have already created a game on this GameJam!\nCheck your games in your profile.");
+            this.router.navigate(['/']);
         }
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-  }
-  addResponsable(username: string, email: string) {
-    let responsableListDiv = document.getElementById('responsableListDiv');
 
-    let responsableDiv = document.createElement('div');
-    responsableDiv.classList.add(
-      'd-flex',
-      'align-items-center',
-      'justify-content-between',
-      'p-2',
-      'mb-3',
-      'border',
-      'rounded',
-      'bg-light'
-    );
+        document.getElementById("home")?.addEventListener('click', evt => {
+            this.router.navigate(['/']);
+        });
 
-    let memberName = document.createElement('span');
-    memberName.innerHTML = username;
-    memberName.classList.add('fw-bold', 'me-4');
+        let venueSelect = document.getElementById("venue");
+        this.cs.getCurrentVenues().subscribe(res => {
+            let venues = res.data as Venue[];
 
-    let memberEmail = document.createElement('span');
-    memberEmail.innerHTML = email;
-    memberEmail.classList.add('text-muted');
+            for (let venue of venues) {
+                let option = document.createElement("option");
+                option.setAttribute("value", venue._id);
+                option.innerHTML = venue.city + ", " + venue.country;
 
-    let addButton = document.createElement('button');
-    addButton.classList.add('btn', 'btn-primary');
-    addButton.setAttribute('type', 'button');
-    addButton.innerHTML = '+';
-    addButton.addEventListener('click', (evt) => {
-      this.addRespondableToList(username, email);
-    });
+                venueSelect?.appendChild(option);
+            }
+        });
 
-    responsableDiv.appendChild(memberName);
-    responsableDiv.appendChild(memberEmail);
-    responsableDiv.appendChild(addButton);
+        document.getElementById('searchBtn')?.addEventListener('click', (evt) => {
+            let memberResults = document.getElementById('memberResults');
+            if (memberResults) {
+                memberResults.innerHTML = '';
+            }
 
-    responsableListDiv?.appendChild(responsableDiv);
-  }
+            let usernameInput = document.getElementById('searchMember') as HTMLInputElement;
+            this.searchUsers(usernameInput.value, "members");
+        });
 
-  addRespondableToList(username: string, email: string) {
-    let responsableDiv = document.getElementById('ResponsableDivMember');
-    if (responsableDiv) {
-      responsableDiv.innerHTML = '';
+        document.getElementById('searchResponsibleBtn')?.addEventListener('click', async (evt) => {
+            let responsibleResults = document.getElementById('responsibleResults');
+            if (responsibleResults) {
+                responsibleResults.innerHTML = '';
+            }
+
+            let usernameInput = document.getElementById('searchResponsible') as HTMLInputElement;
+            this.searchUsers(usernameInput.value, "responsible");
+        });
+
+        // Add current user to members list
+        let user = ((await firstValueFrom(this.cs.getUser(payload._id))).data as User[])[0];
+        let members = document.getElementById('members');
+        
+        let elementDiv = document.createElement("div");
+        elementDiv.setAttribute("id", user.username);
+        elementDiv.setAttribute("class", "d-flex align-items-center justify-content-between p-2 mb-3 border rounded bg-light");
+
+        let username = document.createElement('span');
+        username.setAttribute("class", "fw-bold me-4");
+        username.innerHTML = user.username;
+
+        let email = document.createElement('span');
+        email.setAttribute("class", "text-muted");
+        email.innerText = user._id;
+        
+        elementDiv.appendChild(username);
+        elementDiv.appendChild(email);
+        elementDiv.appendChild(document.createElement("span"));
+        members?.appendChild(elementDiv);
+
+
+        document.getElementById('save')?.addEventListener('click', (evt) => {
+            this.upload();
+        });
     }
 
-    this.responsable = { username, email };
+    async searchUsers(query: string, destination: string) {
+        let response = await firstValueFrom(this.cs.findUser(query));
+        let userResults = response.data as User[];
+        if (!userResults) return;
 
-    let responsibleMemberDiv = document.createElement('div');
-    responsibleMemberDiv.classList.add(
-      'd-flex',
-      'align-items-center',
-      'justify-content-between',
-      'p-2',
-      'mb-3',
-      'border',
-      'rounded',
-      'bg-light'
-    );
+        this.showResults(userResults, destination)
+    } 
+    
+    async showResults(users: User[], destination: string) {
+        let resultsDiv = destination == "responsible" ? document.getElementById('responsibleResults') : document.getElementById('memberResults');
+        let listDiv = destination == "responsible" ? document.getElementById('responsible') : document.getElementById('members');
 
-    let responsibleMemberName = document.createElement('span');
-    responsibleMemberName.innerHTML = username;
-    responsibleMemberName.classList.add('fw-bold', 'me-2');
+        mainloop:
+        for (let user of users) {
+            let children = listDiv?.children;
+            if (children)
+                for (let i = 0; i < children?.length; i++) {
+                    let child = children[i];
+                    
+                    if (child.id === user.username) {
+                        continue mainloop;
+                    }
+                }
+    
+            let resultDiv = document.createElement("div");
+            resultDiv.setAttribute("id", user.username);
+            resultDiv.setAttribute("class", "d-flex align-items-center justify-content-between p-2 mb-3 border rounded bg-light");
+    
+            let username = document.createElement('span');
+            username.setAttribute("class", "fw-bold me-4");
+            username.innerHTML = user.username;
 
-    let responsibleMemberEmail = document.createElement('span');
-    responsibleMemberEmail.innerHTML = email;
-    responsibleMemberEmail.classList.add('text-muted', 'me-2');
+            let email = document.createElement('span');
+            email.setAttribute("class", "text-muted");
+            email.innerText = user._id;
 
-    let deleteMemberButton = document.createElement('button');
-    let deleteIcon = document.createElement('i');
-    deleteIcon.setAttribute('class', 'icon icon-m fa fa-trash');
-    deleteMemberButton.appendChild(deleteIcon);
-    deleteMemberButton.setAttribute('type', 'button');
-    deleteMemberButton.style.setProperty('margin-left', '2%');
-    deleteMemberButton.addEventListener('click', (evt) => {
-      this.responsable = null;
-      responsableDiv?.removeChild(responsibleMemberDiv);
-    });
+            let addButton = document.createElement('button');
 
-    responsibleMemberDiv.appendChild(responsibleMemberName);
-    responsibleMemberDiv.appendChild(responsibleMemberEmail);
-    responsibleMemberDiv.appendChild(deleteMemberButton);
+            resultDiv.appendChild(username);
+            resultDiv.appendChild(email);
+            resultDiv.appendChild(addButton);
 
-    responsableDiv?.appendChild(responsibleMemberDiv);
-  }
+            addButton.setAttribute('class', 'btn btn-primary');
+            addButton.setAttribute('type', 'button');
+            addButton.innerHTML = '+';
+            addButton.addEventListener('click', (evt) => {              
+                let elementDiv = resultDiv.cloneNode() as HTMLDivElement;
+                let elementUser = username.cloneNode(true) as HTMLSpanElement;
+                let elementEmail = email.cloneNode(true) as HTMLSpanElement;
+                let deleteButton = addButton.cloneNode() as HTMLButtonElement;
+                deleteButton.innerHTML = "-";
+                deleteButton.addEventListener("click", evt => {
+                    listDiv?.removeChild(elementDiv);
+                });
 
-  addMemberToList(username: string, email: string) {
-    let memberListDiv = document.getElementById('memberListDiv');
+                (resultsDiv as HTMLDivElement).innerHTML = '';
 
-    let memberDiv = document.createElement('div');
-    memberDiv.classList.add(
-      'd-flex',
-      'align-items-center',
-      'justify-content-between',
-      'p-2',
-      'mb-3',
-      'border',
-      'rounded',
-      'bg-light'
-    );
+                if (destination == "responsible") {
+                    (listDiv as HTMLDivElement).innerHTML = '';
+                    elementEmail.setAttribute("id", "responsibleUser");
+                }
 
-    let memberName = document.createElement('span');
-    memberName.innerHTML = username;
-    memberName.classList.add('fw-bold', 'me-4');
-
-    let memberEmail = document.createElement('span');
-    memberEmail.innerHTML = email;
-    memberEmail.classList.add('text-muted');
-
-    let addButton = document.createElement('button');
-    addButton.classList.add('btn', 'btn-primary');
-    addButton.setAttribute('type', 'button');
-    addButton.innerHTML = '+';
-    addButton.addEventListener('click', (evt) => {
-      this.addMemberToTeam(username, email);
-    });
-
-    memberDiv.appendChild(memberName);
-    memberDiv.appendChild(memberEmail);
-    memberDiv.appendChild(addButton);
-
-    memberListDiv?.appendChild(memberDiv);
-  }
-  addMemberToTeam(username: string, email: string) {
-    this.team.push({ username, email });
-
-    let teamListDiv = document.getElementById('teamListDiv');
-
-    let teamMemberDiv = document.createElement('div');
-    teamMemberDiv.classList.add(
-      'd-flex',
-      'align-items-center',
-      'justify-content-between',
-      'p-2',
-      'mb-3',
-      'border',
-      'rounded',
-      'bg-light'
-    );
-
-    let teamMemberName = document.createElement('span');
-    teamMemberName.innerHTML = username;
-    teamMemberName.classList.add('fw-bold', 'me-2');
-
-    let teamMemberEmail = document.createElement('span');
-    teamMemberEmail.innerHTML = email;
-    teamMemberEmail.classList.add('text-muted', 'me-2');
-
-    let deleteMemberButton = document.createElement('button');
-    let deleteIcon = document.createElement('i');
-    deleteIcon.setAttribute('class', 'icon icon-m fa fa-trash');
-    deleteMemberButton.appendChild(deleteIcon);
-    deleteMemberButton.setAttribute('type', 'button');
-    deleteMemberButton.style.setProperty('margin-left', '2%');
-    deleteMemberButton.addEventListener('click', (evt) => {
-      this.team = this.team.filter(
-        (member) => member.username !== username || member.email !== email
-      );
-      teamListDiv?.removeChild(teamMemberDiv);
-    });
-
-    teamMemberDiv.appendChild(teamMemberName);
-    teamMemberDiv.appendChild(teamMemberEmail);
-    teamMemberDiv.appendChild(deleteMemberButton);
-
-    teamListDiv?.appendChild(teamMemberDiv);
-  }
-
-  upload() {
-    let gameName = (document.getElementById('gameName') as HTMLInputElement)
-      ?.value;
-    let teamName = (document.getElementById('teamName') as HTMLInputElement)
-      ?.value;
-
-    if (!this.responsable) {
-      alert('Debe asignar un responsable al equipo');
-      return;
+                elementDiv.appendChild(elementUser);
+                elementDiv.appendChild(elementEmail);
+                elementDiv.appendChild(deleteButton);
+                listDiv?.appendChild(elementDiv);
+            });
+            
+            resultsDiv?.appendChild(resultDiv);
+        }
     }
 
-    // Verificar si hay miembros en el equipo
-    if (this.team.length === 0) {
-      alert('Debe agregar miembros al equipo');
-      return;
+    upload() {
+        let teamName = (document.getElementById('teamName') as HTMLInputElement)?.value;
+        let venue = (document.getElementById("venue") as HTMLInputElement)?.value;
+        let responsible = document.getElementById("responsibleUser")?.innerHTML;
+        let teamMembers: string[] = [];
+        console.log(venue);
+        
+        if (!responsible) {
+            alert('Debe asignar un responsable al equipo');
+            return;
+        }
+
+        document.getElementById("members")?.childNodes.forEach(div => {
+            teamMembers.push((div.childNodes.item(1) as HTMLElement).innerHTML);
+        })
+
+        if (!teamMembers.includes(responsible)) teamMembers.push(responsible);
+       
+        if (!teamMembers) {
+            alert('Debe agregar miembros al equipo');
+            return;
+        }
+
+        let game: Partial<Game> = {
+            teamName,
+            venue,
+            responsible,
+            teamMembers,
+        };
+
+        this.cs.uploadFirstStage(game as Game, this.token).subscribe((res) => {
+            let response = res as Response;
+            if ([400, 401].includes(response.code)) alert('Error: ' + response.message);
+            if (response.code == 403) alert('Error: ' + response.message);
+            if (response.code == 500) alert(response.message);
+            if (response.code == 200) {
+                alert(response.message);
+                this.router.navigate(['/']);
+            }
+        });
     }
-
-    let responsible = this.responsable.email;
-
-    let teamMembers: string[] = this.team.map((member) => member.email);
-    let game: Partial<Game> = {
-      gameName,
-      teamName,
-      responsible,
-      teamMembers,
-    };
-
-    this.cs.uploadFirstStage(game as Game).subscribe((res) => {
-      let response = res as Response;
-      if ([400, 401].includes(response.code))
-        alert('Error: ' + response.message);
-      if (response.code == 403)
-        alert('Error: ' + response.message + '\nTry logging in instead.');
-      if (response.code == 500) alert(response.message);
-      if (response.code == 200) {
-        if (response.token) this.router.navigate(['/']);
-      }
-    });
-  }
 }

@@ -5,82 +5,124 @@ import { Router } from '@angular/router';
 import { Game } from '../models/game.model';
 import { CookieService } from 'ngx-cookie-service';
 import jwtDecode from 'jwt-decode';
-import { token } from '../connection/token';
+import { Token } from '../connection/token';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
-  selector: 'app-team-info',
-  templateUrl: './team-info.component.html',
-  styleUrls: ['../../styles.css'],
+    selector: 'app-team-info',
+    templateUrl: './team-info.component.html',
+    styleUrls: ['../../styles.css'],
 })
 export class TeamInfoComponent {
-  constructor(
-    private cs: ConnectionService,
-    private cookies: CookieService,
-    private router: Router
-  ) {}
+    private token: string;
+    private game?: Game;
+    private logo?: File;
 
-  ngOnInit(): void {
-    this.init();
-  }
-
-  init() {
-    document.getElementById('save')?.addEventListener('click', (evt) => {
-      this.upload();
-    });
-  }
-
-  upload() {
-    const cookieValue = this.cookies.get('token');
-
-    if (!cookieValue) {
-      return;
+    constructor(private cs: ConnectionService, private cookies: CookieService, private router: Router) {
+        this.token = this.cookies.get("token");
     }
-    let aboutTeam = '';
-    let teamExistence = (
-      document.getElementById('teamExistence') as HTMLInputElement
-    )?.valueAsNumber;
-    let companyName = (
-      document.getElementById('companyName') as HTMLInputElement
-    )?.value;
-    let companyLink = (document.getElementById('teamLink') as HTMLInputElement)
-      ?.value;
 
-    document.getElementsByName('teamHistory').forEach((option) => {
-      // as there'll be only 1 option checked, the loop could be broken by an exception
-      // optimization not necessary for 4 options
-      if ((option as HTMLInputElement).checked)
-        aboutTeam = (option as HTMLInputElement).value;
-    });
-
-    const [headerB64, payloadB64, signature] = cookieValue.split('.');
-    const payloadStr = jwtDecode(cookieValue) as token;
-
-    console.log(payloadStr.email);
-
-    let gameName = this.fetchGameId('david@achoy.net'); //arreglo
-    let game: Partial<Game> = {
-      gameName,
-      teamExistence,
-      aboutTeam,
-      companyName,
-      companyLink,
-    };
-    let file = document.getElementById('userImage') as HTMLInputElement;
-    if (file?.files) {
-      this.cs.uploadTeamInfo(game as Game, file.files[0]);
+    ngOnInit(): void {
+        this.init();
     }
-  }
 
-  fetchGameId(email: string): string {
-    //Realizar cambios al futuro(Solo 1 juego por ahora)
-    this.cs.getUserGames(email).subscribe((res) => {
-      console.log(res);
-      let response = res as Response;
-      if (response.code === 200 && response.data) {
-        return response.data[0]._id;
-      }
-      return '';
-    });
-    return '';
-  }
+    async init() {
+        let payload = jwtDecode(this.token) as Token;
+
+        if (!payload) {
+            alert("You must be logged in to edit information!");
+            return;
+        }
+        
+        this.game = ((await firstValueFrom(this.cs.getCurrentUserGame(payload._id))).data as Game[])[0];
+
+        if (!this.game) {
+            alert("You need to create a game first before adding its team information!");
+            this.router.navigate(['/']);
+        }
+
+        document.getElementById("home")?.addEventListener('click', evt => {
+            this.router.navigate(['/']);
+        });
+
+        let imageInput = document.getElementById("teamLogoInput") as HTMLInputElement;
+        let teamLogo = document.getElementById("teamLogo") as HTMLImageElement;
+
+        if (!(imageInput && teamLogo)) return;
+
+        imageInput.setAttribute("accept", "image/jpeg,image/jpg,image/png");
+        
+        imageInput.onchange = (evt) => {
+            let files = (evt.target as HTMLInputElement).files;
+
+            if (!(files && this.game)) return;
+
+            if (files[0].size / 1024**2 > 5) {
+                alert("The maximum logo size is 5 MB! Choose a different image.");
+                imageInput.value = "";
+                return;
+            }
+
+            this.logo = new File([files[0]], this.game._id, {type: files[0].type});
+
+            let fr = new FileReader();
+            fr.onload = () => {
+                if (!fr.result) return;
+
+                teamLogo.src = fr.result?.toString();
+                
+                if (teamLogo.width > 400 || teamLogo.height > 400) {
+                    alert("The logo maximum dimensions are 400x400! Choose a different image.");
+                    imageInput.value = "";
+                    
+                    document.getElementById("teamLogoDiv")?.removeChild(teamLogo);
+                    teamLogo = document.createElement("img");
+                    teamLogo.setAttribute("id", "teamLogo");
+                    document.getElementById("teamLogoDiv")?.appendChild(teamLogo);
+                    return;
+                }
+            }
+            fr.readAsDataURL(this.logo);
+        }
+
+        document.getElementById('save')?.addEventListener('click', (evt) => {
+            this.upload();
+        });
+    }
+
+    async upload() {
+        let aboutTeam = '';
+        let teamExistence = (document.getElementById('teamExistence') as HTMLInputElement)?.valueAsNumber;
+        let companyName = (document.getElementById('companyName') as HTMLInputElement)?.value;
+        let companyLink = (document.getElementById('teamLink') as HTMLInputElement)?.value;
+
+        document.getElementsByName('teamHistory').forEach((option) => {
+            // as there'll be only 1 option checked, the loop could be broken by an exception
+            // optimization not necessary for 4 options
+            if ((option as HTMLInputElement).checked)
+                aboutTeam = (option as HTMLInputElement).value;
+        });
+           
+        if (!(this.game && this.logo)) {
+            alert("You must provide a valid team logo to continue!");
+            return;
+        }
+        
+        let form = new FormData();
+        form.append("file", this.logo);
+        form.append("_id", this.game._id);
+        form.append("teamExistence", teamExistence.toString());
+        form.append("aboutTeam", aboutTeam);
+        form.append("companyName", companyName);
+        form.append("companyLink", companyLink);
+        
+        this.cs.uploadTeamInfo(form, this.token).subscribe(response => {
+            if (response.code == 500) alert(response.message);
+            if (response.code == 200) {
+                alert(response.message);
+                this.router.navigate(['/']);
+            }
+            else alert('Error: ' + response.message);
+        });
+    }
 }
