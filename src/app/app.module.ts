@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
-import { CustomErrorHandler } from './services/CustomErrorHandler';
+import { CustomErrorHandler } from './services/custom-error-handler';
 
 import { AppComponent } from './app.component';
 import { RegisterComponent } from './register/register.component';
