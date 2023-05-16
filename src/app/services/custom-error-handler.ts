@@ -7,7 +7,8 @@ export class CustomErrorHandler implements ErrorHandler {
 
     handleError(error: any) {
         error = error.toString().toLowerCase();
-        if (error.includes("Invalid token specified: undefined is not an object (evaluating 'e.replace')".toLowerCase()) || error.includes("You must be properly signed in before submitting a game!".toLowerCase())) {
+        
+        if (error.includes("Invalid token specified".toLowerCase()) || error.includes("You must be properly signed in before submitting a game!".toLowerCase())) {
             alert("You must be properly signed in before submitting a game!");
             this.router.navigate(['/']);
         } else if (error.includes("You must be logged in to edit information!".toLowerCase())) {

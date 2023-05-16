@@ -5,4 +5,6 @@ export const environment = {
     EMAIL_REGEX: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})$/,
     PHONE_ERROR: "You must provide a valid phone number!\tExpected format: +1 234567890",
     PHONE_REGEX: /^\+\d{1,3}\s\d{1,14}$/,
+    PASS_REGEX: /^[a-zA-Z0-9@#$%&*.!? ]{8,32}$/,
+    PASS_ERROR: "Your password must be minimum 8 and maximum 32 characters long, and contain only letter, numbers and these special characters: @#$%&*.!? and space!",
 };

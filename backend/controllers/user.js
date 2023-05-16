@@ -25,11 +25,18 @@ module.exports = class Controller{
                     code: 403
                 });
             }
+
+            if (!(new RegExp(process.env.PASS_REGEX)).test(password)) {
+                return res.send({
+                    code: 401,
+                    message: process.env.PASS_ERROR,
+                });
+            }
     
             //Encrypting password
             password = await bcrypt.hash(password, 10);
             const token = jwt.sign(
-                { 
+                {
                     _id,
                     exp: Date.now() + (1000*60*60*24*7),
                 },

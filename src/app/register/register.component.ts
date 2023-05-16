@@ -111,6 +111,23 @@ export class RegisterComponent implements OnInit {
         });
         document.getElementById("emailError")?.appendChild(document.createTextNode(environment.EMAIL_ERROR));
 
+        let passwordInput = document.getElementById("password") as HTMLInputElement;
+        passwordInput.setAttribute("pattern", environment.PASS_REGEX.source);
+        passwordInput.setAttribute("title", environment.PASS_ERROR);
+        passwordInput?.addEventListener("focusout", evt => {
+            let pattern = new RegExp(environment.PASS_REGEX);
+            
+            if (emailInput?.value)
+                if (!pattern.test(passwordInput.value)) {
+                    passwordInput.style.borderColor = "#FF0000";
+                    document.getElementById("passError")?.style.setProperty("display", "block");
+                } else {
+                    passwordInput.style.borderColor = "#ced4da";
+                    document.getElementById("passError")?.style.setProperty("display", "none");
+                }
+        });
+        document.getElementById("passError")?.appendChild(document.createTextNode(environment.EMAIL_ERROR));
+
         let phoneInput = document.getElementById("phone") as HTMLInputElement;
         phoneInput.setAttribute("pattern", environment.PHONE_REGEX.source);
         phoneInput.setAttribute("title", environment.PHONE_ERROR);
@@ -127,6 +144,8 @@ export class RegisterComponent implements OnInit {
                 }
         });
         document.getElementById("phoneError")?.appendChild(document.createTextNode(environment.PHONE_ERROR));
+
+
 
         let  birthDateInput = document.getElementById("birthDate") as HTMLInputElement;
          birthDateInput?.addEventListener("focusout", evt => {

@@ -24,7 +24,6 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        match: [new RegExp(process.env.PASS_REGEX), process.env.PASS_ERROR],
     },
     discord: {
         type: String,
