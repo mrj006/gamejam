@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 const Game = require("../models/game");
 const EngineController = require("./engine");
 const GameJamController = require("./gamejam");

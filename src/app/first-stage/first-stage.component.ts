@@ -187,7 +187,6 @@ export class FirstStageComponent {
         let venue = (document.getElementById("venue") as HTMLInputElement)?.value;
         let responsible = document.getElementById("responsibleUser")?.innerHTML;
         let teamMembers: string[] = [];
-        console.log(venue);
         
         if (!responsible) {
             alert('Debe asignar un responsable al equipo');
