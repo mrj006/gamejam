@@ -27,67 +27,72 @@ export class TeamInfoComponent {
     }
 
     async init() {
-        let payload = jwtDecode(this.token) as Token;
+        try {
+            let payload = jwtDecode(this.token) as Token;
 
-        if (!payload) {
-            alert("You must be logged in to edit information!");
-            return;
-        }
-        
-        this.game = ((await firstValueFrom(this.cs.getCurrentUserGame(payload._id))).data as Game[])[0];
-
-        if (!this.game) {
-            alert("You need to create a game first before adding its team information!");
-            this.router.navigate(['/']);
-        }
-
-        document.getElementById("home")?.addEventListener('click', evt => {
-            this.router.navigate(['/']);
-        });
-
-        let imageInput = document.getElementById("teamLogoInput") as HTMLInputElement;
-        let teamLogo = document.getElementById("teamLogo") as HTMLImageElement;
-
-        if (!(imageInput && teamLogo)) return;
-
-        imageInput.setAttribute("accept", "image/jpeg,image/jpg,image/png");
-        
-        imageInput.onchange = (evt) => {
-            let files = (evt.target as HTMLInputElement).files;
-
-            if (!(files && this.game)) return;
-
-            if (files[0].size / 1024**2 > 5) {
-                alert("The maximum logo size is 5 MB! Choose a different image.");
-                imageInput.value = "";
+            if (!payload) {
+                alert("You must be logged in to edit information!");
                 return;
             }
+            
+            this.game = ((await firstValueFrom(this.cs.getCurrentUserGame(payload._id))).data as Game[])[0];
 
-            this.logo = new File([files[0]], this.game._id, {type: files[0].type});
+            if (!this.game) {
+                alert("You need to create a game first before adding its team information!");
+                this.router.navigate(['/']);
+            }
 
-            let fr = new FileReader();
-            fr.onload = () => {
-                if (!fr.result) return;
+            document.getElementById("home")?.addEventListener('click', evt => {
+                this.router.navigate(['/']);
+            });
 
-                teamLogo.src = fr.result?.toString();
-                
-                if (teamLogo.width > 400 || teamLogo.height > 400) {
-                    alert("The logo maximum dimensions are 400x400! Choose a different image.");
+            let imageInput = document.getElementById("teamLogoInput") as HTMLInputElement;
+            let teamLogo = document.getElementById("teamLogo") as HTMLImageElement;
+
+            if (!(imageInput && teamLogo)) return;
+
+            imageInput.setAttribute("accept", "image/jpeg,image/jpg,image/png");
+            
+            imageInput.onchange = (evt) => {
+                let files = (evt.target as HTMLInputElement).files;
+
+                if (!(files && this.game)) return;
+
+                if (files[0].size / 1024**2 > 5) {
+                    alert("The maximum logo size is 5 MB! Choose a different image.");
                     imageInput.value = "";
-                    
-                    document.getElementById("teamLogoDiv")?.removeChild(teamLogo);
-                    teamLogo = document.createElement("img");
-                    teamLogo.setAttribute("id", "teamLogo");
-                    document.getElementById("teamLogoDiv")?.appendChild(teamLogo);
                     return;
                 }
-            }
-            fr.readAsDataURL(this.logo);
-        }
 
-        document.getElementById('save')?.addEventListener('click', (evt) => {
-            this.upload();
-        });
+                this.logo = new File([files[0]], this.game._id, {type: files[0].type});
+
+                let fr = new FileReader();
+                fr.onload = () => {
+                    if (!fr.result) return;
+
+                    teamLogo.src = fr.result?.toString();
+                    
+                    if (teamLogo.width > 400 || teamLogo.height > 400) {
+                        alert("The logo maximum dimensions are 400x400! Choose a different image.");
+                        imageInput.value = "";
+                        
+                        document.getElementById("teamLogoDiv")?.removeChild(teamLogo);
+                        teamLogo = document.createElement("img");
+                        teamLogo.setAttribute("id", "teamLogo");
+                        document.getElementById("teamLogoDiv")?.appendChild(teamLogo);
+                        return;
+                    }
+                }
+                fr.readAsDataURL(this.logo);
+            }
+
+            document.getElementById('save')?.addEventListener('click', (evt) => {
+                this.upload();
+            });
+        } catch(e) {
+            alert("We are unable to load the page, try again later.");
+            this.router.navigate(['/']);
+        }
     }
 
     async upload() {
