@@ -113,7 +113,7 @@ module.exports = class Controller {
 
             if (!game) {
                 return res.send({
-                    message: "We couldn't find the information you are looking for.",
+                    data: [],
                     code: 404,
                 });    
             }    
