@@ -149,7 +149,7 @@ export class RegisterComponent implements OnInit {
         div.setAttribute("class", "input-group mb-1 col-md-3");
         div.style.setProperty("margin-bottom", "1%");
 
-        let skillDivID = crypto.randomUUID();
+        let skillDivID = this.randomString();
         div.setAttribute("id",skillDivID);
 
         let skillInput = document.createElement("input");
@@ -175,6 +175,15 @@ export class RegisterComponent implements OnInit {
 
         let skillsDiv = document.getElementById("skillsDiv")
         skillsDiv?.appendChild(div);
+    }
+
+    randomString(): string {
+        let string = "";
+        let valid = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (let i = 0; i < 32; i++) string += valid.charAt(Math.floor(Math.random() * valid.length));
+
+        return string;
     }
 
     register() {
