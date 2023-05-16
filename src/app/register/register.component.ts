@@ -126,7 +126,7 @@ export class RegisterComponent implements OnInit {
                     document.getElementById("passError")?.style.setProperty("display", "none");
                 }
         });
-        document.getElementById("passError")?.appendChild(document.createTextNode(environment.EMAIL_ERROR));
+        document.getElementById("passError")?.appendChild(document.createTextNode(environment.PASS_ERROR));
 
         let phoneInput = document.getElementById("phone") as HTMLInputElement;
         phoneInput.setAttribute("pattern", environment.PHONE_REGEX.source);
