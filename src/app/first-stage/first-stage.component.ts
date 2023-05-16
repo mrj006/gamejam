@@ -97,6 +97,9 @@ export class FirstStageComponent {
         elementDiv.appendChild(document.createElement("span"));
         members?.appendChild(elementDiv);
 
+        document.getElementById('back')?.addEventListener('click', (evt) => {
+            this.router.navigate(['/']);
+        });
 
         document.getElementById('save')?.addEventListener('click', (evt) => {
             this.upload();

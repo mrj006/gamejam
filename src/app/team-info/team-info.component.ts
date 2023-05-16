@@ -79,6 +79,10 @@ export class TeamInfoComponent {
             fr.readAsDataURL(this.logo);
         }
 
+        document.getElementById('back')?.addEventListener('click', (evt) => {
+            this.router.navigate(['/']);
+        });
+
         document.getElementById('save')?.addEventListener('click', (evt) => {
             this.upload();
         });
