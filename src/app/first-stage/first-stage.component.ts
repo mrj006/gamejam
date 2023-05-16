@@ -33,7 +33,7 @@ export class FirstStageComponent {
             throw "You must be properly signed in before submitting a game!";
         }
 
-        let games = (await firstValueFrom(this.cs.getCurrentUserGame(payload._id))).data as Game[];
+        let games = ((await firstValueFrom(this.cs.getCurrentUserGame(payload._id))).data as Game[])[0];
         
         if (games) {
             throw "You have already created a game on this GameJam!";
