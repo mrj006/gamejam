@@ -44,9 +44,10 @@ export class TeamInfoComponent {
         });
 
         let imageInput = document.getElementById("teamLogoInput") as HTMLInputElement;
-        let teamLogo = document.getElementById("teamLogo") as HTMLImageElement;
+        let teamLogo = document.createElement("img");
+        teamLogo.setAttribute("id", "teamLogo");
 
-        if (!(imageInput && teamLogo)) return;
+        if (!(imageInput)) return;
 
         imageInput.setAttribute("accept", "image/jpeg,image/jpg,image/png");
         
@@ -70,13 +71,10 @@ export class TeamInfoComponent {
                 
                 if (teamLogo.width > 400 || teamLogo.height > 400) {
                     imageInput.value = "";
-                    
-                    document.getElementById("teamLogoDiv")?.removeChild(teamLogo);
-                    teamLogo = document.createElement("img");
-                    teamLogo.setAttribute("id", "teamLogo");
-                    document.getElementById("teamLogoDiv")?.appendChild(teamLogo);
                     throw "image dimensions";
                 }
+
+                document.getElementById("teamLogoDiv")?.appendChild(teamLogo);
             }
             fr.readAsDataURL(this.logo);
         }

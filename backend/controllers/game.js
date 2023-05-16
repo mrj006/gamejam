@@ -131,20 +131,20 @@ module.exports = class Controller {
         try {
             let user = await User.findById(email);
 
-            if (!user) return null;
+            if (!user) return false;
 
             let gamejam = await GameJamController.getCurrentGameJam();
 
-            if (!gamejam) return null;
+            if (!gamejam) return false;
 
             let gameID = user.games[0];
             let game = await Game.findById(gameID);
 
-            if (!game) return null;
+            if (!game) return false;
 
             let venue = await Venue.findById(game.venue);
 
-            if (venue.gamejam != gamejam._id) return null;
+            if (venue.gamejam != gamejam._id) return false;
 
             return game;
         } catch(e) {

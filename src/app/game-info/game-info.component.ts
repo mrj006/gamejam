@@ -48,9 +48,10 @@ export class GameInfoComponent implements OnInit {
         });
 
         let imageInput = document.getElementById("gameLogoInput") as HTMLInputElement;
-        let gameLogo = document.getElementById("gameLogo") as HTMLImageElement;
+        let gameLogo = document.createElement("img");
+        gameLogo.setAttribute("id", "gameLogo");
 
-        if (!(imageInput && gameLogo)) return;
+        if (!(imageInput)) return;
 
         imageInput.setAttribute("accept", "image/jpeg,image/jpg,image/png");
         
@@ -61,10 +62,6 @@ export class GameInfoComponent implements OnInit {
 
             if (files[0].size / 1024**2 > 5) {
                 imageInput.value = "";
-                document.getElementById("gameLogoDiv")?.removeChild(gameLogo);
-                gameLogo = document.createElement("img");
-                gameLogo.setAttribute("id", "gameLogo");
-                document.getElementById("gameLogoDiv")?.appendChild(gameLogo);
                 throw "image size";
             }
 
@@ -78,13 +75,10 @@ export class GameInfoComponent implements OnInit {
                 
                 if (gameLogo.width > 400 || gameLogo.height > 400) {
                     imageInput.value = "";
-                    
-                    document.getElementById("gameLogoDiv")?.removeChild(gameLogo);
-                    gameLogo = document.createElement("img");
-                    gameLogo.setAttribute("id", "gameLogo");
-                    document.getElementById("gameLogoDiv")?.appendChild(gameLogo);
                     throw "image dimensions";
                 }
+
+                document.getElementById("gameLogoDiv")?.appendChild(gameLogo);
             }
             fr.readAsDataURL(this.logo);
         }
