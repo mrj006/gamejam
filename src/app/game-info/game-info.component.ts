@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ConnectionService } from '../connection/connection';
+import { ConnectionService } from '../services/connection';
 import { CookieService } from 'ngx-cookie-service';
 import { firstValueFrom } from 'rxjs';
 import { Theme } from '../models/theme.model';
 import { Category } from '../models/category.model';
 import jwtDecode from 'jwt-decode';
-import { Token } from '../connection/token';
+import { Token } from '../services/token';
 import { Game } from '../models/game.model';
 import { Platform } from '../models/platform.model';
 import { Genre } from '../models/genre.model';
@@ -35,15 +35,13 @@ export class GameInfoComponent implements OnInit {
             let payload = jwtDecode(this.token) as Token;
 
             if (!payload) {
-                alert("You must be logged in to edit information!");
-                return;
+                throw "You must be logged in to edit information!";
             }
             
             this.game = ((await firstValueFrom(this.cs.getCurrentUserGame(payload._id))).data as Game[])[0];
 
             if (!this.game) {
-                alert("You need to create a game first before adding its information!");
-                this.router.navigate(['/']);
+                throw "You need to create a game first before adding its information!";
             }
 
             document.getElementById("home")?.addEventListener('click', evt => {
@@ -63,13 +61,12 @@ export class GameInfoComponent implements OnInit {
                 if (!(files && this.game)) return;
 
                 if (files[0].size / 1024**2 > 5) {
-                    alert("The maximum logo size is 5 MB! Choose a different image.");
                     imageInput.value = "";
                     document.getElementById("gameLogoDiv")?.removeChild(gameLogo);
                     gameLogo = document.createElement("img");
                     gameLogo.setAttribute("id", "gameLogo");
                     document.getElementById("gameLogoDiv")?.appendChild(gameLogo);
-                    return;
+                    throw "image size";
                 }
 
                 this.logo = new File([files[0]], this.game._id, {type: files[0].type});
@@ -81,14 +78,13 @@ export class GameInfoComponent implements OnInit {
                     gameLogo.src = fr.result?.toString();
                     
                     if (gameLogo.width > 400 || gameLogo.height > 400) {
-                        alert("The logo maximum dimensions are 400x400! Choose a different image.");
                         imageInput.value = "";
                         
                         document.getElementById("gameLogoDiv")?.removeChild(gameLogo);
                         gameLogo = document.createElement("img");
                         gameLogo.setAttribute("id", "gameLogo");
                         document.getElementById("gameLogoDiv")?.appendChild(gameLogo);
-                        return;
+                        throw "image dimensions";
                     }
                 }
                 fr.readAsDataURL(this.logo);

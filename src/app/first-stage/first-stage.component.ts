@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { ConnectionService } from '../connection/connection';
-import { Response } from '../connection/response';
+import { ConnectionService } from '../services/connection';
+import { Response } from '../services/response';
 import { Router } from '@angular/router';
 import { Game } from '../models/game.model';
 import { User } from '../models/user.model';
@@ -8,7 +8,7 @@ import { Venue } from '../models/venue.model';
 import { firstValueFrom } from 'rxjs';
 import jwtDecode from 'jwt-decode';
 import { CookieService } from 'ngx-cookie-service';
-import { Token } from '../connection/token';
+import { Token } from '../services/token';
 
 @Component({
     selector: 'app-first-stage',
@@ -27,87 +27,80 @@ export class FirstStageComponent {
     }
 
     async init() {   
-        try {     
-            let payload = jwtDecode(this.token) as Token;
-            
-            if (!payload) {
-                alert("You must be properly signed in before submitting a game!");
-                this.router.navigate(['/']);
-            }
-
-            let games = (await firstValueFrom(this.cs.getCurrentUserGame(payload._id))).data as Game[];
-            
-            if (games) {
-                alert("You have already created a game on this GameJam!\nCheck your games in your profile.");
-                this.router.navigate(['/']);
-            }
-
-            document.getElementById("home")?.addEventListener('click', evt => {
-                this.router.navigate(['/']);
-            });
-
-            let venueSelect = document.getElementById("venue");
-            this.cs.getCurrentVenues().subscribe(res => {
-                let venues = res.data as Venue[];
-
-                for (let venue of venues) {
-                    let option = document.createElement("option");
-                    option.setAttribute("value", venue._id);
-                    option.innerHTML = venue.city + ", " + venue.country;
-
-                    venueSelect?.appendChild(option);
-                }
-            });
-
-            document.getElementById('searchBtn')?.addEventListener('click', (evt) => {
-                let memberResults = document.getElementById('memberResults');
-                if (memberResults) {
-                    memberResults.innerHTML = '';
-                }
-
-                let usernameInput = document.getElementById('searchMember') as HTMLInputElement;
-                this.searchUsers(usernameInput.value, "members");
-            });
-
-            document.getElementById('searchResponsibleBtn')?.addEventListener('click', async (evt) => {
-                let responsibleResults = document.getElementById('responsibleResults');
-                if (responsibleResults) {
-                    responsibleResults.innerHTML = '';
-                }
-
-                let usernameInput = document.getElementById('searchResponsible') as HTMLInputElement;
-                this.searchUsers(usernameInput.value, "responsible");
-            });
-
-            // Add current user to members list
-            let user = ((await firstValueFrom(this.cs.getUser(payload._id))).data as User[])[0];
-            let members = document.getElementById('members');
-            
-            let elementDiv = document.createElement("div");
-            elementDiv.setAttribute("id", user.username);
-            elementDiv.setAttribute("class", "d-flex align-items-center justify-content-between p-2 mb-3 border rounded bg-light");
-
-            let username = document.createElement('span');
-            username.setAttribute("class", "fw-bold me-4");
-            username.innerHTML = user.username;
-
-            let email = document.createElement('span');
-            email.setAttribute("class", "text-muted");
-            email.innerText = user._id;
-            
-            elementDiv.appendChild(username);
-            elementDiv.appendChild(email);
-            elementDiv.appendChild(document.createElement("span"));
-            members?.appendChild(elementDiv);
-
-
-            document.getElementById('save')?.addEventListener('click', (evt) => {
-                this.upload();
-            });
-        } catch(e) {
-            alert("We are unable to load the page, try again later.");
-            this.router.navigate(['/']);
+        let payload = jwtDecode(this.token) as Token;
+        
+        if (!payload) {
+            throw "You must be properly signed in before submitting a game!";
         }
+
+        let games = (await firstValueFrom(this.cs.getCurrentUserGame(payload._id))).data as Game[];
+        
+        if (games) {
+            throw "You have already created a game on this GameJam!";
+        }
+
+        document.getElementById("home")?.addEventListener('click', evt => {
+            this.router.navigate(['/']);
+        });
+
+        let venueSelect = document.getElementById("venue");
+        this.cs.getCurrentVenues().subscribe(res => {
+            let venues = res.data as Venue[];
+
+            for (let venue of venues) {
+                let option = document.createElement("option");
+                option.setAttribute("value", venue._id);
+                option.innerHTML = venue.city + ", " + venue.country;
+
+                venueSelect?.appendChild(option);
+            }
+        });
+
+        document.getElementById('searchBtn')?.addEventListener('click', (evt) => {
+            let memberResults = document.getElementById('memberResults');
+            if (memberResults) {
+                memberResults.innerHTML = '';
+            }
+
+            let usernameInput = document.getElementById('searchMember') as HTMLInputElement;
+            this.searchUsers(usernameInput.value, "members");
+        });
+
+        document.getElementById('searchResponsibleBtn')?.addEventListener('click', async (evt) => {
+            let responsibleResults = document.getElementById('responsibleResults');
+            if (responsibleResults) {
+                responsibleResults.innerHTML = '';
+            }
+
+            let usernameInput = document.getElementById('searchResponsible') as HTMLInputElement;
+            this.searchUsers(usernameInput.value, "responsible");
+        });
+
+        // Add current user to members list
+        let user = ((await firstValueFrom(this.cs.getUser(payload._id))).data as User[])[0];
+        let members = document.getElementById('members');
+        
+        let elementDiv = document.createElement("div");
+        elementDiv.setAttribute("id", user.username);
+        elementDiv.setAttribute("class", "d-flex align-items-center justify-content-between p-2 mb-3 border rounded bg-light");
+
+        let username = document.createElement('span');
+        username.setAttribute("class", "fw-bold me-4");
+        username.innerHTML = user.username;
+
+        let email = document.createElement('span');
+        email.setAttribute("class", "text-muted");
+        email.innerText = user._id;
+        
+        elementDiv.appendChild(username);
+        elementDiv.appendChild(email);
+        elementDiv.appendChild(document.createElement("span"));
+        members?.appendChild(elementDiv);
+
+
+        document.getElementById('save')?.addEventListener('click', (evt) => {
+            this.upload();
+        });
     }
 
     async searchUsers(query: string, destination: string) {

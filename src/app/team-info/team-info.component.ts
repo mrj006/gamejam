@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { ConnectionService } from '../connection/connection';
-import { Response } from '../connection/response';
+import { ConnectionService } from '../services/connection';
+import { Response } from '../services/response';
 import { Router } from '@angular/router';
 import { Game } from '../models/game.model';
 import { CookieService } from 'ngx-cookie-service';
 import jwtDecode from 'jwt-decode';
-import { Token } from '../connection/token';
+import { Token } from '../services/token';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -27,72 +27,63 @@ export class TeamInfoComponent {
     }
 
     async init() {
-        try {
-            let payload = jwtDecode(this.token) as Token;
+        let payload = jwtDecode(this.token) as Token;
 
-            if (!payload) {
-                alert("You must be logged in to edit information!");
-                return;
-            }
-            
-            this.game = ((await firstValueFrom(this.cs.getCurrentUserGame(payload._id))).data as Game[])[0];
-
-            if (!this.game) {
-                alert("You need to create a game first before adding its team information!");
-                this.router.navigate(['/']);
-            }
-
-            document.getElementById("home")?.addEventListener('click', evt => {
-                this.router.navigate(['/']);
-            });
-
-            let imageInput = document.getElementById("teamLogoInput") as HTMLInputElement;
-            let teamLogo = document.getElementById("teamLogo") as HTMLImageElement;
-
-            if (!(imageInput && teamLogo)) return;
-
-            imageInput.setAttribute("accept", "image/jpeg,image/jpg,image/png");
-            
-            imageInput.onchange = (evt) => {
-                let files = (evt.target as HTMLInputElement).files;
-
-                if (!(files && this.game)) return;
-
-                if (files[0].size / 1024**2 > 5) {
-                    alert("The maximum logo size is 5 MB! Choose a different image.");
-                    imageInput.value = "";
-                    return;
-                }
-
-                this.logo = new File([files[0]], this.game._id, {type: files[0].type});
-
-                let fr = new FileReader();
-                fr.onload = () => {
-                    if (!fr.result) return;
-
-                    teamLogo.src = fr.result?.toString();
-                    
-                    if (teamLogo.width > 400 || teamLogo.height > 400) {
-                        alert("The logo maximum dimensions are 400x400! Choose a different image.");
-                        imageInput.value = "";
-                        
-                        document.getElementById("teamLogoDiv")?.removeChild(teamLogo);
-                        teamLogo = document.createElement("img");
-                        teamLogo.setAttribute("id", "teamLogo");
-                        document.getElementById("teamLogoDiv")?.appendChild(teamLogo);
-                        return;
-                    }
-                }
-                fr.readAsDataURL(this.logo);
-            }
-
-            document.getElementById('save')?.addEventListener('click', (evt) => {
-                this.upload();
-            });
-        } catch(e) {
-            alert("We are unable to load the page, try again later.");
-            this.router.navigate(['/']);
+        if (!payload) {
+            throw "You must be logged in to edit information!";
         }
+        
+        this.game = ((await firstValueFrom(this.cs.getCurrentUserGame(payload._id))).data as Game[])[0];
+
+        if (!this.game) {
+            throw "You need to create a game first before adding its information!";
+        }
+
+        document.getElementById("home")?.addEventListener('click', evt => {
+            this.router.navigate(['/']);
+        });
+
+        let imageInput = document.getElementById("teamLogoInput") as HTMLInputElement;
+        let teamLogo = document.getElementById("teamLogo") as HTMLImageElement;
+
+        if (!(imageInput && teamLogo)) return;
+
+        imageInput.setAttribute("accept", "image/jpeg,image/jpg,image/png");
+        
+        imageInput.onchange = (evt) => {
+            let files = (evt.target as HTMLInputElement).files;
+
+            if (!(files && this.game)) return;
+
+            if (files[0].size / 1024**2 > 5) {
+                imageInput.value = "";
+                throw "image size";
+            }
+
+            this.logo = new File([files[0]], this.game._id, {type: files[0].type});
+
+            let fr = new FileReader();
+            fr.onload = () => {
+                if (!fr.result) return;
+
+                teamLogo.src = fr.result?.toString();
+                
+                if (teamLogo.width > 400 || teamLogo.height > 400) {
+                    imageInput.value = "";
+                    
+                    document.getElementById("teamLogoDiv")?.removeChild(teamLogo);
+                    teamLogo = document.createElement("img");
+                    teamLogo.setAttribute("id", "teamLogo");
+                    document.getElementById("teamLogoDiv")?.appendChild(teamLogo);
+                    throw "image dimensions";
+                }
+            }
+            fr.readAsDataURL(this.logo);
+        }
+
+        document.getElementById('save')?.addEventListener('click', (evt) => {
+            this.upload();
+        });
     }
 
     async upload() {

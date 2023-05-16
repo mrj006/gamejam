@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { ConnectionService } from '../connection/connection';
-import { Response } from '../connection/response';
+import { ConnectionService } from '../services/connection';
+import { Response } from '../services/response';
 import { CookieService } from 'ngx-cookie-service';
 import jwtDecode from 'jwt-decode';
-import { Token } from '../connection/token';
+import { Token } from '../services/token';
 
 @Component({
     selector: 'app-register',
