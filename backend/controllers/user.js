@@ -98,7 +98,7 @@ module.exports = class Controller{
             const token = jwt.sign(
                 { 
                     _id,
-                    exp: Math.floor(Date.now() / 1000) + (60*60*24*7),
+                    exp: Date.now() + (1000*60*60*24*7),
                 },
                 process.env.TOKEN_KEY,
             );
