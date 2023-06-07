@@ -72,7 +72,6 @@ module.exports = class Controller{
             console.log(e);
         }
     }
-
     static getCurrentThemesRoute = async (req, res) => {
         try {
             let themes = await this.getCurrentThemes();
@@ -100,4 +99,23 @@ module.exports = class Controller{
             console.log(e);
         }
     }
+    static addGamejam = async (req, res) => {
+        let {_id, desc} = req.body;
+        try {
+            const gamejam = new GameJam({
+                _id, 
+                password,
+                description,
+            });
+
+            await gamejam.save();
+            return res.send({
+                message: "ya",
+                code: 200,
+                token: token,
+            });
+        } catch(e) {
+            errorHandling(e, res);
+        }
+    };
 };

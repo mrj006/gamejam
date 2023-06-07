@@ -33,5 +33,8 @@ export class HomeComponent implements OnInit {
         document.getElementById("login")?.addEventListener('click', evt => {
             this.router.navigate(['/login']);
         });
+        document.getElementById("gamejam")?.addEventListener('click', evt => {
+            this.router.navigate(['/gamejam']);
+        });
     }
 }
