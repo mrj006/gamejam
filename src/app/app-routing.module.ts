@@ -6,6 +6,8 @@ import { TeamInfoComponent } from './team-info/team-info.component';
 import { GameInfoComponent } from './game-info/game-info.component';
 import { FirstStageComponent } from './first-stage/first-stage.component';
 import { LoginComponent } from './login/login.component';
+import { EngineComponent } from './engine/engine.component';
+import { PlatformComponent } from './platform/platform.component';
 const routes: Routes = [
     { path: '', component: HomeComponent},
     { path: 'register', component: RegisterComponent },
@@ -13,7 +15,9 @@ const routes: Routes = [
     { path: 'game-info', component: GameInfoComponent },
     { path: 'first-stage', component: FirstStageComponent },
     { path: 'login', component: LoginComponent },
-
+    { path: 'engine', component: EngineComponent },
+    { path: 'platform', component: PlatformComponent},
+    
 
 
 
