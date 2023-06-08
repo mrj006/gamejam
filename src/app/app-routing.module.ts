@@ -8,6 +8,7 @@ import { FirstStageComponent } from './first-stage/first-stage.component';
 import { LoginComponent } from './login/login.component';
 import { GamejamComponent } from './gamejam/gamejam.component';
 import { ViewGamejamsComponent } from './view-gamejams/view-gamejams.component';
+import { GetZipComponent } from './get-zip/get-zip.component';
 
 const routes: Routes = [
     { path: '', component: HomeComponent},
@@ -18,6 +19,7 @@ const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'gamejam', component: GamejamComponent },
     { path: 'view-gamejam', component: ViewGamejamsComponent },
+    { path: 'get-zip', component: GetZipComponent }
 
 
 
