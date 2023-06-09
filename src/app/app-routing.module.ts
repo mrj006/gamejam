@@ -9,7 +9,8 @@ import { LoginComponent } from './login/login.component';
 import { GamejamComponent } from './gamejam/gamejam.component';
 import { ViewGamejamsComponent } from './view-gamejams/view-gamejams.component';
 import { GetZipComponent } from './get-zip/get-zip.component';
-
+import { EngineComponent } from './engine/engine.component';
+import { PlatformComponent } from './platform/platform.component';
 const routes: Routes = [
     { path: '', component: HomeComponent},
     { path: 'register', component: RegisterComponent },
@@ -19,7 +20,9 @@ const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'gamejam', component: GamejamComponent },
     { path: 'view-gamejam', component: ViewGamejamsComponent },
-    { path: 'get-zip', component: GetZipComponent }
+    { path: 'get-zip', component: GetZipComponent },
+    { path: 'engine', component: EngineComponent },
+    { path: 'platform', component: PlatformComponent},
 
 
 
