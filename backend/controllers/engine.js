@@ -34,6 +34,15 @@ module.exports = class Controller{
         let _id = req.body._id;
 
         try {
+            let user = await User.findById(req.user);
+
+            if (!user.isGlobalOrg) {
+                return res.send({
+                    message: "You are not authorized to add GameJams!",
+                    code: 403,
+                });
+            }
+
             let existingEngine = await Engine.findById(_id);
 
             if (existingEngine) {
@@ -61,6 +70,15 @@ module.exports = class Controller{
         let _id = req.body._id;
 
         try {
+            let user = await User.findById(req.user);
+
+            if (!user.isGlobalOrg) {
+                return res.send({
+                    message: "You are not authorized to add GameJams!",
+                    code: 403,
+                });
+            }
+
             await Engine.findByIdAndRemove(_id);
 
             return res.send({
