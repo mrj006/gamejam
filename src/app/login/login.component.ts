@@ -40,6 +40,7 @@ export class LoginComponent implements OnInit {
     };
 
     this.cs.loginUser(user as User).subscribe((res) => {
+      console.log(res)
       let response = res as Response;
       if ([400, 401].includes(response.code))
         alert('Error: ' + response.message);
@@ -47,6 +48,7 @@ export class LoginComponent implements OnInit {
       if (response.code == 200) {
 
         if (response.token) {
+          console.log('Me cago en david')
           let payload = jwtDecode(response.token) as Token;
           let expiration = new Date(payload.exp);
           this.cookies.set('token', response.token, expiration);

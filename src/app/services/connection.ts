@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user.model';
 import { Game } from '../models/game.model';
+import { Gamejam } from '../models/gamejam.model';
 import { Response } from './response';
 
 @Injectable({
@@ -17,6 +18,9 @@ export class ConnectionService {
 
   public registerUser(user: User) {
     return this.http.post(this.api + '/register', user);
+  }
+  public addGamejam(gamejam: Gamejam) {
+    return this.http.post(this.api + '/addGamejam', gamejam);;
   }
 
   public findUser(param: string) {

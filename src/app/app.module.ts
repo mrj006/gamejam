@@ -12,6 +12,8 @@ import { TeamInfoComponent } from './team-info/team-info.component';
 import { GameInfoComponent } from './game-info/game-info.component';
 import { FirstStageComponent } from './first-stage/first-stage.component';
 import { LoginComponent } from './login/login.component';
+import { GamejamComponent } from './gamejam/gamejam.component';
+import { ViewGamejamsComponent } from './view-gamejams/view-gamejams.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { LoginComponent } from './login/login.component';
     GameInfoComponent,
     FirstStageComponent,
     LoginComponent,
+    GamejamComponent,
+    ViewGamejamsComponent,
   ],
   imports: [
     BrowserModule,
