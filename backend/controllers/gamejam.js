@@ -1,5 +1,6 @@
 const errorHandling = require("../configs/error");
 const GameJam = require("../models/gamejam");
+const User = require("../models/user");
 
 module.exports = class Controller{
     static async getCurrentGameJam() {
@@ -105,6 +106,14 @@ module.exports = class Controller{
         let {_id, description} = req.body;
         
         try {
+            let user = await User.findById(req.user);
+
+            if (!user.isGlobalOrg) {
+                return res.send({
+                    message: "You are not authorized to add GameJams!",
+                    code: 403,
+                });
+            }
 
             let existingGameJam = await GameJam.findById(_id);
 
@@ -134,6 +143,15 @@ module.exports = class Controller{
         let {_id, description} = req.body;
 
         try {
+            let user = await User.findById(req.user);
+
+            if (!user.isGlobalOrg) {
+                return res.send({
+                    message: "You are not authorized to add GameJams!",
+                    code: 403,
+                });
+            }
+
             let gamejam = await GameJam.findById(_id);
             
             if (!gamejam) {
@@ -158,6 +176,15 @@ module.exports = class Controller{
         let _id = req.body._id;
 
         try {
+            let user = await User.findById(req.user);
+
+            if (!user.isGlobalOrg) {
+                return res.send({
+                    message: "You are not authorized to add GameJams!",
+                    code: 403,
+                });
+            }
+
             await GameJam.findByIdAndRemove(_id);
 
             return re.send({
