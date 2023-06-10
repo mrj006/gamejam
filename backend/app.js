@@ -34,6 +34,8 @@ app.get("/currentCategories", gamejamController.getCurrentCategoriesRoute);
 
 ///// ENGINE /////
 app.get("/engines", engineController.getEngines);
+app.post("/addEngine", engineController.addEngine);
+app.post("/deleteEngine", engineController.deleteEngine);
 
 ////// GAME //////
 app.get("/getUserGames", gameController.findUserGames);

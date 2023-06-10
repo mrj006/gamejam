@@ -1,3 +1,4 @@
+const errorHandling = require("../configs/error");
 const Engine = require("../models/engine");
 
 module.exports = class Controller{
@@ -27,5 +28,46 @@ module.exports = class Controller{
         } catch(e) {
             errorHandling(e, res);
         }
-    }
+    };
+
+    static addEngine = async (req, res) => {
+        let _id = req.body._id;
+
+        try {
+            let existingEngine = await Engine.findById(_id);
+
+            if (existingEngine) {
+                return res.send({
+                    message: "The provided engine already exists!",
+                    code: 403,
+                });
+            }
+
+            let engine = new Engine({
+                _id,
+            });
+
+            await engine.save();
+
+            return res.send({
+                code: 200,
+            });
+        } catch(e) {
+            errorHandling(e, res);
+        }
+    };
+
+    static deleteEngine = async (req, res) => {
+        let _id = req.body._id;
+
+        try {
+            await Engine.findByIdAndRemove(_id);
+
+            return res.send({
+                code: 200,
+            });
+        } catch(e) {
+            errorHandling(e, res);
+        }
+    };
 };
