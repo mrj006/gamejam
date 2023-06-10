@@ -1,3 +1,4 @@
+const errorHandling = require("../configs/error");
 const GameJam = require("../models/gamejam");
 
 module.exports = class Controller{
@@ -100,10 +101,20 @@ module.exports = class Controller{
         }
     }
 
-    static addGamejam = async (req, res) => {
+    static addGameJam = async (req, res) => {
         let {_id, description} = req.body;
         
         try {
+
+            let existingGameJam = await GameJam.findById(_id);
+
+            if (existingGameJam) {
+                return res.send({
+                    message: "The provided GameJam already exists!",
+                    code: 403,
+                });
+            }
+
             const gamejam = new GameJam({
                 _id, 
                 description,
@@ -112,6 +123,44 @@ module.exports = class Controller{
             await gamejam.save();
 
             return res.send({
+                code: 200,
+            });
+        } catch(e) {
+            errorHandling(e, res);
+        }
+    };
+
+    static updateGameJam = async (req, res) => {
+        let {_id, description} = req.body;
+
+        try {
+            let gamejam = await GameJam.findById(_id);
+            
+            if (!gamejam) {
+                return res.send({
+                    message: "We could not find the provided GameJam!",
+                    code: 404,
+                });
+            }
+
+            gamejam.description = description;
+            await gamejam.save();
+
+            return res.send({
+                code: 200,
+            });
+        } catch(e) {
+            errorHandling(e, res);
+        }
+    };
+
+    static deleteGameJam = async (req, res) => {
+        let _id = req.body._id;
+
+        try {
+            await GameJam.findByIdAndRemove(_id);
+
+            return re.send({
                 code: 200,
             });
         } catch(e) {

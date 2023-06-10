@@ -45,7 +45,10 @@ app.post("/gameInfo", auth, gameController.uploadFile("gameLogos"), gameControll
 
 ///// GAMEJAM /////
 app.get("/currentGameJam", gamejamController.getCurrentGameJamRoute);
-app.post("/addGamejam", gamejamController.addGamejam);
+app.post("/addGameJam", gamejamController.addGameJam);
+app.post("/updateGameJam", gamejamController.updateGameJam);
+app.post("/deleteGameJam", gamejamController.deleteGameJam);
+
 ///// GENRE //////
 app.get("/genres", genreController.getGenres);
 
