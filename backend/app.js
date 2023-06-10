@@ -4,6 +4,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const path = require("path");
 
 require("dotenv").config();
 require("./configs/database");
@@ -23,6 +24,10 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(cookieParser());
+
+///// ANGULAR /////
+app.use(express.static(path.resolve("dist", "gamejam")));
+app.get('/', (req, res) => res.sendFile(path.resolve("dist", "gamejam", "index.html")));
 
 ///// CATEGORY /////
 app.get("/currentCategories", gamejamController.getCurrentCategoriesRoute);
