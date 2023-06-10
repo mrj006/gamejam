@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Caretaker = require("./caretaker");
 const path = require("path");
 require("dotenv").config({ path: path.resolve("backend", ".env") });
 
@@ -115,7 +116,7 @@ const gameSchema = new mongoose.Schema({
         default: undefined,
     },
     gameFile: {
-        type: String,
+        type: Caretaker,
         required: function() {
             return this.phase > 2;
         },

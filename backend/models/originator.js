@@ -15,7 +15,7 @@ const originatorSchema = new mongoose.Schema(
             required: true,
         },
         date: {
-            type: String,
+            type: Number,
             required: true,
         },
     },
@@ -46,7 +46,12 @@ const originatorSchema = new mongoose.Schema(
                 this.date = date;
             },
             getCurrent() {
-                return this.executable + "\t" + this.description + "\t" + this.version + "\t" + this.date;
+                return {
+                    executable: this.executable,
+                    version: this.version,
+                    description: this.description,
+                    date: this.date
+                };
             },
             backup() {
                 return new mementoModel({
@@ -67,4 +72,4 @@ const originatorSchema = new mongoose.Schema(
         },
     },
 );
-module.exports = mongoose.model("Originator", originatorSchema);
+module.exports = originatorSchema;

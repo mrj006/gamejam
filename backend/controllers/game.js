@@ -1,13 +1,14 @@
 const crypto = require("crypto");
+const Caretaker = require("../models/caretaker");
 const Game = require("../models/game");
+const Originator = require("../models/originator");
+const User = require("../models/user");
+const Venue = require("../models/venue");
 const EngineController = require("./engine");
 const GameJamController = require("./gamejam");
 const GenreController = require("./genre");
 const PlatformController = require("./platform");
-const User = require("../models/user");
-const Venue = require("../models/venue");
 const path = require('path');
-const jwtDecode = require("jwt-decode");
 const errorHandling = require("../configs/error");
 require("dotenv").config({ path: path.resolve("backend", ".env") });
 
@@ -73,7 +74,7 @@ module.exports = class Controller {
             return upload.single("file");
         }
 
-        upload = multer({storage});
+        let upload = multer({storage});
         
         return upload.single("file");
     }
@@ -105,7 +106,7 @@ module.exports = class Controller {
         } catch(e) {
             errorHandling(e, res);
         }    
-    };    
+    };
 
     static getCurrentUserGameRoute = async (req, res) => {
         try {
@@ -131,8 +132,6 @@ module.exports = class Controller {
         try {
             let user = await User.findById(email);
 
-            if (!user) return false;
-
             let gamejam = await GameJamController.getCurrentGameJam();
 
             if (!gamejam) return false;
@@ -153,7 +152,7 @@ module.exports = class Controller {
     }    
 
     static uploadFirstStage = async (req, res) => {
-        let _id = jwtDecode(req.query.token)._id;
+        let _id = req.user;
         let {teamName, venue, responsible, teamMembers} = req.body;
 
         try {
@@ -324,7 +323,47 @@ module.exports = class Controller {
             errorHandling(e, res);
             try {
                 await this.deleteFile(req.file.filename, "gameLogos");
-                console.log("File: " + req.file.filename + " deleted as the tem information could not be saved!");
+                console.log("File: " + req.file.filename + " deleted as the team information could not be saved!");
+            } catch(e) {
+                console.log("File: " + req.file.filename + " was supposed to be deleted but failed!");
+            }
+        }
+    };
+
+    static uploadGameExecutable = async (req, res) => {
+        let userID = req.user;
+        let gameID = req.body._id;
+        let data = {
+            executable: req.file.filename,
+            version: req.body.version,
+            description: req.body.description,
+            date: Date.now(),
+        };
+
+        try {
+            let user = await User.findById(userID);
+
+            if (!user.games.includes(gameID)) {
+                return res.send({
+                    message: "You can only edit your own games!",
+                    code: 403,
+                });
+            }
+
+            let game = await Game.findById(gameID);
+            game.gameFile.originator = data;
+            game.gameFile.backup();
+
+            await game.save();
+
+            return res.send({
+                code: 200,
+            });
+        } catch(e) {
+            errorHandling(e, res);
+            try {
+                await this.deleteFile(req.file.filename, "gameLogos");
+                console.log("File: " + req.file.filename + " deleted as the  information could not be saved!");
             } catch(e) {
                 console.log("File: " + req.file.filename + " was supposed to be deleted but failed!");
             }

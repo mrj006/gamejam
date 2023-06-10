@@ -15,7 +15,7 @@ const mementoSchema = new mongoose.Schema(
             required: true,
         },
         date: {
-            type: String,
+            type: Number,
             required: true,
         },
     },
@@ -37,4 +37,4 @@ const mementoSchema = new mongoose.Schema(
     },
 );
 
-module.exports = mongoose.model("Memento", mementoSchema);
+module.exports = mementoSchema;
