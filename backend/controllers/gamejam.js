@@ -99,20 +99,20 @@ module.exports = class Controller{
             console.log(e);
         }
     }
+
     static addGamejam = async (req, res) => {
-        let {_id, desc} = req.body;
+        let {_id, description} = req.body;
+        
         try {
             const gamejam = new GameJam({
                 _id, 
-                password,
                 description,
             });
 
             await gamejam.save();
+
             return res.send({
-                message: "ya",
                 code: 200,
-                token: token,
             });
         } catch(e) {
             errorHandling(e, res);
