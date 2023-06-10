@@ -362,11 +362,38 @@ module.exports = class Controller {
         } catch(e) {
             errorHandling(e, res);
             try {
-                await this.deleteFile(req.file.filename, "gameLogos");
-                console.log("File: " + req.file.filename + " deleted as the  information could not be saved!");
+                await this.deleteFile(req.file.filename, "gameBinaries");
+                console.log("File: " + req.file.filename + " deleted as the game binary information could not be saved!");
             } catch(e) {
                 console.log("File: " + req.file.filename + " was supposed to be deleted but failed!");
             }
+        }
+    };
+
+    static uploadGamePitch = async (req, res) => {
+        let userID = req.user;
+        let {gameID, pitchLink} = req.body._id;
+
+        try {
+            let user = await User.findById(userID);
+
+            if (!user.games.includes(gameID)) {
+                return res.send({
+                    message: "You can only edit your own games!",
+                    code: 403,
+                });
+            }
+
+            let game = await Game.findById(gameID);
+            game.pitchLink = pitchLink;
+            
+            await game.save();
+
+            return res.send({
+                code: 200,
+            });
+        } catch(e) {
+            errorHandling(e, res);
         }
     };
 };

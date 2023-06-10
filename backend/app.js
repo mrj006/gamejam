@@ -45,6 +45,7 @@ app.post("/firstStage", auth, gameController.uploadFirstStage);
 app.post("/teamInfo", auth, gameController.uploadFile("teamLogos"), gameController.uploadTeamInfo);
 app.post("/gameInfo", auth, gameController.uploadFile("gameLogos"), gameController.uploadGameInfo);
 app.post("/uploadGameExecutable", auth, gameController.uploadFile("gameBinaries"), gameController.uploadGameExecutable);
+app.post("/uploadGamePitch", auth, gameController.uploadGamePitch);
 
 ///// GAMEJAM /////
 app.get("/currentGameJam", gamejamController.getCurrentGameJamRoute);

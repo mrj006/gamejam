@@ -126,6 +126,7 @@ const gameSchema = new mongoose.Schema({
         required: function() {
             return this.phase > 3;
         },
+        match: [new RegExp(process.env.PITCH_REGEX), process.env.PITCH_ERROR],
     },
     phase: {
         type: Number,
