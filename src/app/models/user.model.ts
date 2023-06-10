@@ -18,4 +18,9 @@ export interface User {
     jobOpportunities?: Boolean;
     investments?: Boolean;
     isGlobalOrg?: Boolean;
+    localOrgs?: string[];
+    jammers?: string[];
+    mentors?: string[];
+    judges?: string[];
+    califications?: string[];
 }

@@ -3,8 +3,8 @@ export interface Venue {
     city: string;
     country: string;
     gamejams: Date[];
-    localOrgs: string[];
-    jammers: string[];
-    mentors: string[];
-    judges: string[];
+    localOrgs?: string[];
+    jammers?: string[];
+    mentors?: string[];
+    judges?: string[];
 }

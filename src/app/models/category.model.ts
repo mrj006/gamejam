@@ -3,5 +3,4 @@ export interface Category {
     description: string;
     sponsor: string;
     rules: string;
-    gamejam: Date[];
 }
