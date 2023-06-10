@@ -56,6 +56,8 @@ app.get("/genres", genreController.getGenres);
 
 ///// PLATFORM /////
 app.get("/platforms", platformController.getPlatforms);
+app.post("/addPlatform", platformController.addPlatform);
+app.post("/deletePlatform", platformController.deletePlatform);
 
 ////// THEME /////
 app.get("/currentThemes", gamejamController.getCurrentThemesRoute);

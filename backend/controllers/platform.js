@@ -1,3 +1,4 @@
+const errorHandling = require("../configs/error");
 const Platform = require("../models/platform");
 
 module.exports = class Controller{
@@ -27,5 +28,46 @@ module.exports = class Controller{
         } catch(e) {
             errorHandling(e, res);
         }
-    }
+    };
+
+    static addPlatform = async (req, res) => {
+        let _id = req.body._id;
+
+        try {
+            let existingPlatform = await Platform.findById(_id);
+
+            if (existingPlatform) {
+                return res.send({
+                    message: "The provided paltform already exists!",
+                    code: 403,
+                });
+            }
+
+            let platform = new Platform({
+                _id,
+            });
+
+            await platform.save();
+
+            return res.send({
+                code: 200,
+            });
+        } catch(e) {
+            errorHandling(e, res);
+        }
+    };
+
+    static deletePlatform = async (req, res) => {
+        let _id = req.body._id;
+
+        try {
+            await Platform.findByIdAndRemove(_id);
+
+            return res.send({
+                code: 200,
+            });
+        } catch(e) {
+            errorHandling(e, res);
+        }
+    };
 };
