@@ -27,6 +27,11 @@ export class ConnectionService {
     );
   }
 
+  public getCurrentGameJam() {
+    return this.http.get<Response>(this.api + '/currentGameJam');
+  }
+  
+
   public findUser(param: string) {
     return this.http.get<Response>(`${this.api}/findUsers?user=${param}`);
   }
