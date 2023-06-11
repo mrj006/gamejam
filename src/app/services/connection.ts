@@ -94,4 +94,10 @@ export class ConnectionService {
       form
     );
   }
+  public uploadPitchInfo(game: Game, token: string) {
+    return this.http.post<Response>(
+      this.api + '/gamePitch?token=' + token,
+      game
+    );
+  }
 }
