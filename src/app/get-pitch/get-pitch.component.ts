@@ -57,36 +57,44 @@ export class GetPitchComponent {
     let pitchLink = (document.getElementById('linkInput') as HTMLInputElement)
       ?.value;
     if (!pitchLink) {
-      alert('Por favor, ingrese una URL válida');
+      alert('Por favor, ingrese una URL');
       return;
     }
 
     // RegExp to match a valid YouTube URL
-    let youtubeRegExp = /^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/;
-
-    if (youtubeRegExp.test(pitchLink)) {
-
-      
-      let game: Partial<Game> = {
-        _id: this.game?._id,
-        pitchLink,
-      };
-
-      this.cs.uploadPitchInfo(game as Game, this.token).subscribe((res) => {
-        let response = res as Response;
-
-        if ([400, 401].includes(response.code))
-          alert('Error: ' + response.message);
-        if (response.code == 403) alert('Error: ' + response.message);
-        if (response.code == 500) alert(response.message);
-        if (response.code == 200) {
-          alert(response.message);
-          this.router.navigate(['/']);
-        }
-      });
-    } else {
-      alert('El enlace ingresado no pertenece al dominio de YouTube');
+    let youtubeRegExp = new RegExp(
+      '^https?://(?:www.)?(?<domain>[a-zA-Z.]*)/.*'
+    );
+    const domainList = ['youtube.com', 'youtu.be'];
+    let match = youtubeRegExp.exec(pitchLink);
+    if (!match) {
+      alert('Por favor, ingrese una URL válida');
       return;
     }
+    if (match.groups) {
+      let domain = match.groups['domain'];
+      if (!domainList.includes(domain)) {
+        alert('Por favor, ingrese un dominio valido');
+        return;
+      }
+    }
+
+    let game: Partial<Game> = {
+      _id: this.game?._id,
+      pitchLink,
+    };
+
+    this.cs.uploadPitchInfo(game as Game, this.token).subscribe((res) => {
+      let response = res as Response;
+
+      if ([400, 401].includes(response.code))
+        alert('Error: ' + response.message);
+      if (response.code == 403) alert('Error: ' + response.message);
+      if (response.code == 500) alert(response.message);
+      if (response.code == 200) {
+        alert(response.message);
+        this.router.navigate(['/']);
+      }
+    });
   }
 }
