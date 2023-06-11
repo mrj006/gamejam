@@ -100,7 +100,7 @@ export class ConnectionService {
   }
   public uploadPitchInfo(game: Game, token: string) {
     return this.http.post<Response>(
-      this.api + '/gamePitch?token=' + token,
+      this.api + '/uploadGamePitch?token=' + token,
       game
     );
   }
