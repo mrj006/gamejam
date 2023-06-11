@@ -3,25 +3,19 @@
     <div class="card-body">
       <h1 class="text-center">Engine</h1>
       <div class="form-group">
-        <div class="mb-3 col-md-12"> 
-          <select multiple class = "form-control" id="EngineSelect">
-            <option value="1">Ejemplo 1</option>
-            <option value="2">Ejemplo 2</option>
-            <option value="1">Ejemplo 3</option>
-            <option value="2">Ejemplo 4</option>
-            <option value="1">Ejemplo 5</option>
-            <option value="2">Ejemplo 6</option>
-            <option value="1">Ejemplo 7</option>
-            <option value="2">Ejemplo 8</option>
-            <option value="1">Ejemplo 9</option>
-            <option value="2">Ejemplo 10</option>
+        <div class="mb-3 col-md-12" > 
+          <select multiple class = "form-control"  aria-label="Select engine" style="height: 20vh;">
+            <option *ngFor="let engine of Engines" [value]="engine._id">
+              {{engine._id}}
+            </option>
+            
           </select>        
           <div class="mb-3 col-md-12">
             <div class="mt-2 mb-3">
-              <input type="text" class = "form-control" placeholder="Engine name"> 
+              <input type="text" class = "form-control" placeholder="Engine name" id="engineName" > 
             </div>  
             <div class="mt-2 mb-3">
-              <button type="button" class="btn btn-primary full-width" id="addEngineButton">
+              <button type="button" class="btn btn-primary full-width" aria-label="addEngineButton"  >
                   <p>Add Engine</p>
               </button>
             </div>

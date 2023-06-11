@@ -6,6 +6,7 @@ import { Game } from '../models/game.model';
 import { Gamejam } from '../models/gamejam.model';
 import { Response } from './response';
 import { Engine } from '../models/engine.model';
+import { Platform } from '../models/platform.model';
 
 @Injectable({
   providedIn: 'root',
@@ -62,6 +63,9 @@ export class ConnectionService {
 
   public getPlatforms() {
     return this.http.get<Response>(this.api + '/platforms');
+  }
+  public addPlatform(platform: Platform){
+    return this.http.post<Response>(this.api + '/addPlatform', platform);
   }
 
   public getUserGames(user: string) {
