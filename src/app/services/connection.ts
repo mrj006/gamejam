@@ -5,6 +5,7 @@ import { User } from '../models/user.model';
 import { Game } from '../models/game.model';
 import { Gamejam } from '../models/gamejam.model';
 import { Response } from './response';
+import { Engine } from '../models/engine.model';
 
 @Injectable({
   providedIn: 'root',
@@ -51,7 +52,10 @@ export class ConnectionService {
   public getEngines() {
     return this.http.get<Response>(this.api + '/engines');
   }
-
+  
+  public addEngine(engine: Engine){
+    return this.http.post<Response>(this.api + '/addEngine', engine);
+  }
   public getGenres() {
     return this.http.get<Response>(this.api + '/genres');
   }

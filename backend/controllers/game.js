@@ -54,7 +54,7 @@ module.exports = class Controller {
 
                 if (!type.includes(file.mimetype)) return null;
 
-                let filename = file.originalname + Date.now() + "." + file.mimetype.split('/')[1];
+                let filename = file.originalname + "_" + Date.now() + "." + file.mimetype.split('/')[1];
                 return {
                     id: filename,
                     bucketName,
@@ -116,8 +116,8 @@ module.exports = class Controller {
                 return res.send({
                     data: [],
                     code: 404,
-                });    
-            }    
+                });
+            }
 
             return res.send({
                 code: 200,
@@ -243,11 +243,11 @@ module.exports = class Controller {
     };
 
     static uploadGameInfo = async (req, res) => {
-        let _id = req.body._id;
-        let {gameName, description, isForUnderAge, themes, genres, categories, engine, platforms} = JSON.parse(req.body.body);
-        let gameLogo = req.file.filename;
-
         try {
+            let _id = req.body._id;
+            let {gameName, description, isForUnderAge, themes, genres, categories, engine, platforms} = JSON.parse(req.body.body);
+            let gameLogo = req.file.filename;
+    
             let invalidThemes = "";
             for (let theme of themes) {
                 if (!(await GameJamController.getCurrentTheme(theme))) invalidThemes += theme + "\n";
@@ -357,6 +357,7 @@ module.exports = class Controller {
             await game.save();
 
             return res.send({
+                message: "Stage saved successfully!",
                 code: 200,
             });
         } catch(e) {
@@ -372,7 +373,8 @@ module.exports = class Controller {
 
     static uploadGamePitch = async (req, res) => {
         let userID = req.user;
-        let {gameID, pitchLink} = req.body._id;
+        let gameID = req.body._id;
+        let pitchLink = req.body.pitchLink;
 
         try {
             let user = await User.findById(userID);
@@ -390,6 +392,7 @@ module.exports = class Controller {
             await game.save();
 
             return res.send({
+                message: "Stage saved successfully!",
                 code: 200,
             });
         } catch(e) {
