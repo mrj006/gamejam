@@ -13,7 +13,10 @@ import { Gamejam } from '../models/gamejam.model';
   styleUrls: ['../../styles.css']
 })
 export class GamejamComponent implements OnInit{
-  constructor(private cs: ConnectionService, private cookies: CookieService, private router: Router) {}
+  private token: string;
+  constructor(private cs: ConnectionService, private cookies: CookieService, private router: Router) {
+    this.token = this.cookies.get('token');
+  }
 
   ngOnInit(): void {
       this.init();
@@ -28,20 +31,24 @@ export class GamejamComponent implements OnInit{
     });
     
 }
-addGamejam(){
-  let fecha = (document.getElementById('date') as HTMLInputElement)?.value;
-  let desc = (document.getElementById('desc') as HTMLInputElement)?.value;
+async addGamejam(){
+  let payload = jwtDecode(this.token) as Token;
+  if (!payload) {
+    throw "You must be properly signed in before creating a gamejam!";
+}
+  let _id = (document.getElementById('_id') as HTMLInputElement)?.value;
+  let description = (document.getElementById('description') as HTMLInputElement)?.value;
   let gj :Gamejam =  {
-    _id: fecha,
-    description : desc,
+    _id,
+    description,
   };
   console.log(gj);
-//   this.cs.addGamejam(gj).subscribe(res => {
-//     let response = res as Response;
-//     if (response.code == 200) {
-//         this.router.navigate(['/']);
-//     }          
-// });
+  this.cs.addGamejam(gj, this.token).subscribe((res) => {
+    let response = res as Response;
+    if (response.code == 200) {
+        this.router.navigate(['/']);
+    }          
+});
 this.router.navigate(['/']);
 }
 }

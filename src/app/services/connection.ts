@@ -19,8 +19,11 @@ export class ConnectionService {
   public registerUser(user: User) {
     return this.http.post(this.api + '/register', user);
   }
-  public addGamejam(gamejam: Gamejam) {
-    return this.http.post(this.api + '/addGamejam', gamejam);;
+  public addGamejam(gamejam: Gamejam, token: string) {
+    return this.http.post<Response>(
+      this.api + '/addGameJam?token=' + token,
+      gamejam
+    );
   }
 
   public findUser(param: string) {
