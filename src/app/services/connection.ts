@@ -8,105 +8,110 @@ import { Response } from './response';
 import { Engine } from '../models/engine.model';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class ConnectionService {
-  private api = environment.BACKEND;
+    private api = environment.BACKEND;
 
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) { }
 
-  /////////////////////////////// USER ///////////////////////////////
+    /////////////////////////////// USER ///////////////////////////////
 
-  public registerUser(user: User) {
-    return this.http.post(this.api + '/register', user);
-  }
-  public addGamejam(gamejam: Gamejam, token: string) {
-    return this.http.post<Response>(
-      this.api + '/addGameJam?token=' + token,
-      gamejam
-    );
-  }
+    public registerUser(user: User) {
+        return this.http.post(this.api + '/register', user);
+    }
+    public addGamejam(gamejam: Gamejam, token: string) {
+        return this.http.post<Response>(
+            this.api + '/addGameJam?token=' + token,
+            gamejam
+        );
+    }
 
-  public getCurrentGameJam() {
-    return this.http.get<Response>(this.api + '/currentGameJam');
-  }
-  
+    public getCurrentGameJam() {
+        return this.http.get<Response>(this.api + '/currentGameJam');
+    }
 
-  public findUser(param: string) {
-    return this.http.get<Response>(`${this.api}/findUsers?user=${param}`);
-  }
 
-  public loginUser(user: User) {
-    return this.http.post<Response>(this.api + '/login', user);
-  }
+    public findUser(param: string) {
+        return this.http.get<Response>(`${this.api}/findUsers?user=${param}`);
+    }
 
-  /////////////////////////////// GAME ///////////////////////////////
+    public loginUser(user: User) {
+        return this.http.post<Response>(this.api + '/login', user);
+    }
 
-  public getCurrentCategories() {
-    return this.http.get<Response>(this.api + '/currentCategories');
-  }
+    /////////////////////////////// GAME ///////////////////////////////
 
-  public getCurrentThemes() {
-    return this.http.get<Response>(this.api + '/currentThemes');
-  }
+    public getCurrentCategories() {
+        return this.http.get<Response>(this.api + '/currentCategories');
+    }
 
-  public getCurrentVenues() {
-    return this.http.get<Response>(this.api + '/currentVenues');
-  }
+    public getCurrentThemes() {
+        return this.http.get<Response>(this.api + '/currentThemes');
+    }
 
-  public getEngines() {
-    return this.http.get<Response>(this.api + '/engines');
-  }
-  
-  public addEngine(engine: Engine){
-    return this.http.post<Response>(this.api + '/addEngine', engine);
-  }
-  public getGenres() {
-    return this.http.get<Response>(this.api + '/genres');
-  }
+    public getCurrentVenues() {
+        return this.http.get<Response>(this.api + '/currentVenues');
+    }
 
-  public getPlatforms() {
-    return this.http.get<Response>(this.api + '/platforms');
-  }
+    public getEngines() {
+        return this.http.get<Response>(this.api + '/engines');
+    }
 
-  public getUserGames(user: string) {
-    return this.http.get<Response>(`${this.api}/getUserGames?user=${user}`);
-  }
+    public addEngine(engine: Engine) {
+        return this.http.post<Response>(this.api + '/addEngine', engine);
+    }
+    public getGenres() {
+        return this.http.get<Response>(this.api + '/genres');
+    }
 
-  public getUser(user: string) {
-    return this.http.get<Response>(this.api + '/getUser?_id=' + user);
-  }
+    public getPlatforms() {
+        return this.http.get<Response>(this.api + '/platforms');
+    }
 
-  public getCurrentUserGame(user: string) {
-    return this.http.get<Response>(
-      this.api + '/getCurrentUserGame?_id=' + user
-    );
-  }
+    public getUserGames(user: string) {
+        return this.http.get<Response>(`${this.api}/getUserGames?user=${user}`);
+    }
 
-  public uploadFirstStage(game: Game, token: string) {
-    return this.http.post<Response>(
-      this.api + '/firstStage?token=' + token,
-      game
-    );
-  }
+    public getUser(user: string) {
+        return this.http.get<Response>(this.api + '/getUser?_id=' + user);
+    }
 
-  public uploadTeamInfo(form: FormData, token: string) {
-    return this.http.post<Response>(
-      this.api + '/teamInfo?token=' + token,
-      form
-    );
-  }
+    public getCurrentUserGame(user: string) {
+        return this.http.get<Response>(
+            this.api + '/getCurrentUserGame?_id=' + user
+        );
+    }
 
-  public uploadGameInfo(form: FormData, token: string) {
-    return this.http.post<Response>(
-      this.api + '/gameInfo?token=' + token,
-      form
-    );
-  }
-  public uploadPitchInfo(game: Game, token: string) {
-    return this.http.post<Response>(
-      this.api + '/uploadGamePitch?token=' + token,
-      game
-    );
-  }
+    public uploadFirstStage(game: Game, token: string) {
+        return this.http.post<Response>(
+            this.api + '/firstStage?token=' + token,
+            game
+        );
+    }
+
+    public uploadTeamInfo(form: FormData, token: string) {
+        return this.http.post<Response>(
+            this.api + '/teamInfo?token=' + token,
+            form
+        );
+    }
+
+    public uploadGameInfo(form: FormData, token: string) {
+        return this.http.post<Response>(
+            this.api + '/gameInfo?token=' + token,
+            form
+        );
+    }
+
+    public uploadGameExecutable(form: FormData, token: string) {
+        return this.http.post<Response>(this.api + "/uploadGameExecutable?token=" + token, form);
+    }
+
+    public uploadPitchInfo(game: Game, token: string) {
+        return this.http.post<Response>(
+            this.api + '/uploadGamePitch?token=' + token,
+            game
+        );
+    }
 }

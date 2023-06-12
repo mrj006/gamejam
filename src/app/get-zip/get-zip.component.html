@@ -19,11 +19,26 @@
                 </div>
                 <!-- widgets-wrap.// -->
                 <h4 class="text-center mt-4 mb-4" style="text-transform: uppercase">
-                    Get zip
+                    Game Executable
                 </h4>
                 <form>
                     <div class="form-row">
-                        <input class="form-control" type="file" id="teamLogoInput" name="teamLogoInput" #teamLogoInput required />
+                        <div class="mb-3 col-md-3">
+                            <label class="form-label" for="gameExecutableInput">Game Executable *</label>
+                            <input class="form-control" type="file" id="gameExecutableInput" name="gameExecutableInput" #gameExecutableInput required />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="mb-3 col-md-3">
+                            <label class="form-label" for="gameExecutableVersion">Version *</label>
+                            <input class="form-control" type="text" placeholder="Type in your game version" id="gameExecutableVersion"
+                                name="gameExecutableVersion" #gameExecutableVersion />
+                        </div>
+                        <div class="mb-3 col-md-12">
+                            <label class="form-label" for="gameExecutableDescription">Description *</label>
+                            <textarea class="form-control" type="text" placeholder="Type in your version description/changelog" id="gameExecutableDescription"
+                            name="gameExecutableDescription" #gameExecutableDescription></textarea>
+                        </div>
                     </div>
                     <hr class="mt-3 mb-4" />
                     <div class="col-12">
