@@ -334,10 +334,11 @@ module.exports = class Controller {
         let userID = req.user;
         let gameID = req.body._id;
         let data = {
+            _id: crypto.randomUUID(),
             executable: req.file.filename,
             version: req.body.version,
             description: req.body.description,
-            date: Date.now(),
+            date: req.file.filename.split("_")[1].split(".")[0],
         };
 
         try {
@@ -351,8 +352,29 @@ module.exports = class Controller {
             }
 
             let game = await Game.findById(gameID);
-            game.gameFile.originator = data;
-            game.gameFile.backup();
+
+            if (!game.gameFile) {
+                let originator = new Originator(data);
+                await originator.save();
+
+                let caretaker = new Caretaker({
+                    _id: crypto.randomUUID(),
+                    originator: originator._id,
+                });
+
+                await caretaker.backup();
+                await caretaker.save();
+                game.gameFile = caretaker._id;
+            }
+            else {
+                let caretaker = await Caretaker.findById(game.gameFile);
+                let originator = await Originator.findById(caretaker.originator);
+                originator.setData(data);
+
+                await originator.save();
+                await caretaker.backup();
+                await caretaker.save();
+            }
 
             await game.save();
 
