@@ -59,8 +59,11 @@ export class ConnectionService {
         return this.http.get<Response>(this.api + '/engines');
     }
 
-    public addEngine(engine: Engine) {
-        return this.http.post<Response>(this.api + '/addEngine', engine);
+    public addEngine(engine: Engine, token: string) {
+        return this.http.post<Response>(this.api + '/addEngine?token=' + token, engine);
+    }
+    public deleteEngine(engine: Engine, token: string){
+        return this.http.post<Response>(this.api + '/deleteEngine?token=' + token, engine);
     }
     public getGenres() {
         return this.http.get<Response>(this.api + '/genres');
@@ -69,9 +72,12 @@ export class ConnectionService {
     public getPlatforms() {
         return this.http.get<Response>(this.api + '/platforms');
     }
-  public addPlatform(platform: Platform){
-    return this.http.post<Response>(this.api + '/addPlatform', platform);
-  }
+    public addPlatform(platform: Platform, token: string){
+        return this.http.post<Response>(this.api + '/addPlatform?token=' + token, platform);
+    }
+    public deletePlatform(platform: Platform, token: string){
+        return this.http.post<Response>(this.api + '/deletePlatform?token=' + token, platform);
+    }
 
     public getUserGames(user: string) {
         return this.http.get<Response>(`${this.api}/getUserGames?user=${user}`);

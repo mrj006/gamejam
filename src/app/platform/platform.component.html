@@ -4,23 +4,22 @@
       <h1 class="text-center">Platform</h1>
       <div class="form-group">
         <div class="mb-3 col-md-12" > 
-          <select multiple class = "form-control"  aria-label="Select engine" style="height: 20vh;">
-            <option *ngFor="let platform of Platforms" [value]="platform._id">
-              {{platform._id}}
-            </option>
-            
-          </select>        
-          <div class="mb-3 col-md-12">
-            <div class="mt-2 mb-3">
-              <input type="text" class = "form-control" placeholder="Platform name" id="platformName"> 
-            </div>  
-            <div class="mt-2 mb-3">
-              <button type="button" class="btn btn-primary full-width" aria-label="addPlatformButton"  >
-                  <p>Add Platform</p>
-              </button>
-            </div>
-          </div> 
-        </div>       
+          <select multiple class= "form-control"  aria-label="Select platform" id="platformSelect">                        
+          </select>                            
+        </div> 
+        <div class="mb-3 col-md-12">
+          <button class="btn btn-danger" id="deleteSelected" type="button">
+              Delete selected
+          </button>
+        </div> 
+        <div class="mb-3 col-md-12">          
+          <input type="text" class = "form-control" placeholder="platform name" id="platformName" >           
+        </div>
+        <div class="mb-3 col-md-12">
+          <button type="button" class="btn btn-primary full-width" id="addPlatformButton"  >
+              <p>Add platform</p>
+          </button>
+        </div>      
       </div>
     </div>
   </div>
