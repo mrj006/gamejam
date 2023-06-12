@@ -70,14 +70,15 @@ const schema = new mongoose.Schema(
                     description: this.description,
                     date: this.date,
                 });
+
                 await memento.save();
 
                 return _id;
             },
-            restore(mementoID) {
+            async restore(mementoID) {
                 if (!mementoID) return;
 
-                let memento = Memento.findById(mementoID);
+                let memento = await Memento.findById(mementoID);
                 this.executable = memento.getExecutable();
                 this.version = memento.getVersion();
                 this.description = memento.getDescription();

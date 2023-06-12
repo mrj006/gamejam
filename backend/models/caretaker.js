@@ -14,13 +14,13 @@ const schema = new mongoose.Schema(
                 let originator = await Originator.findById(this.originator);
                 this.mementos.push(await originator.backup());
             },
-            undo() {
+            async undo() {
                 const memento = this.mementos.pop();
-                let originator = Originator.findById(this.orignator);
-                originator.restore(memento);
+                let originator = await Originator.findById(this.orignator);
+                await originator.restore(memento);
             },
-            getLastVersion() {
-                let memento = Memento.findById(this.mementos.at(-1));
+            async getLastVersion() {
+                let memento = await Memento.findById(this.mementos.at(-1));
 
                 return {
                     executable: memento.getExecutable(),
@@ -29,10 +29,10 @@ const schema = new mongoose.Schema(
                     date: memento.getDate(),
                 };
             },
-            getVersiones() {
+            async getVersiones() {
                 let versions = [];
                 for (let mementoID of this.mementos) {
-                    let memento = Memento.findById(mementoID);
+                    let memento = await Memento.findById(mementoID);
                     versions.push({
                         executable: memento.getExecutable(),
                         version: memento.getVersion(),
