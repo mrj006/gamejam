@@ -116,7 +116,7 @@ const gameSchema = new mongoose.Schema({
         default: undefined,
     },
     gameFile: {
-        type: Caretaker,
+        type: String,
         required: function() {
             return this.phase > 2;
         },

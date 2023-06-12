@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 
-const mementoSchema = new mongoose.Schema(
+const schema = new mongoose.Schema(
     {
+        _id: String,
         executable: {
             type: String,
             required: true,
@@ -37,4 +38,4 @@ const mementoSchema = new mongoose.Schema(
     },
 );
 
-module.exports = mementoSchema;
+module.exports = mongoose.model("Memento", schema);
