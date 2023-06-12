@@ -1,4 +1,5 @@
 const errorHandling = require("../configs/error");
+const User = require("../models/user");
 const Platform = require("../models/platform");
 
 module.exports = class Controller{
