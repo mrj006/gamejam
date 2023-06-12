@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
+const Memento = require("./memento");
 
-const originatorSchema = new mongoose.Schema(
+const schema = new mongoose.Schema(
     {
+        _id: String,
         executable: {
             type: String,
             required: true,
@@ -53,17 +55,30 @@ const originatorSchema = new mongoose.Schema(
                     date: this.date
                 };
             },
-            backup() {
-                return new mementoModel({
+            setData(data) {
+                this.executable = data.executable;
+                this.version = data.version;
+                this.description = data.description;
+                this.date = data.date;
+            },
+            async backup() {
+                let _id = crypto.randomUUID();
+                let memento = new Memento({
+                    _id,
                     executable: this.executable,
                     version: this.version,
                     description: this.description,
                     date: this.date,
                 });
-            },
-            restore(memento) {
-                if (!memento) return;
 
+                await memento.save();
+
+                return _id;
+            },
+            async restore(mementoID) {
+                if (!mementoID) return;
+
+                let memento = await Memento.findById(mementoID);
                 this.executable = memento.getExecutable();
                 this.version = memento.getVersion();
                 this.description = memento.getDescription();
@@ -72,4 +87,5 @@ const originatorSchema = new mongoose.Schema(
         },
     },
 );
-module.exports = originatorSchema;
+
+module.exports = mongoose.model("Originator", schema);

@@ -16,6 +16,8 @@ import { GamejamComponent } from './gamejam/gamejam.component';
 import { ViewGamejamsComponent } from './view-gamejams/view-gamejams.component';
 import { EngineComponent } from './engine/engine.component';
 import { PlatformComponent } from './platform/platform.component';
+import { GetPitchComponent } from './get-pitch/get-pitch.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,6 +31,7 @@ import { PlatformComponent } from './platform/platform.component';
     ViewGamejamsComponent,
     EngineComponent,
     PlatformComponent,
+    GetPitchComponent,
   ],
   imports: [
     BrowserModule,

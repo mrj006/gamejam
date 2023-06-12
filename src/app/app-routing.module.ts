@@ -11,6 +11,7 @@ import { ViewGamejamsComponent } from './view-gamejams/view-gamejams.component';
 import { GetZipComponent } from './get-zip/get-zip.component';
 import { EngineComponent } from './engine/engine.component';
 import { PlatformComponent } from './platform/platform.component';
+import { GetPitchComponent } from './get-pitch/get-pitch.component';
 const routes: Routes = [
     { path: '', component: HomeComponent},
     { path: 'register', component: RegisterComponent },
@@ -23,6 +24,8 @@ const routes: Routes = [
     { path: 'get-zip', component: GetZipComponent },
     { path: 'engine', component: EngineComponent },
     { path: 'platform', component: PlatformComponent},
+    { path: 'get-pitch', component: GetPitchComponent},
+
 
 
 

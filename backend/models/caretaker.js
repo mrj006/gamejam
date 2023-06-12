@@ -2,23 +2,25 @@ const mongoose = require("mongoose");
 const Memento = require("./memento");
 const Originator = require("./originator");
 
-const caretakerSchema = new mongoose.Schema(
+const schema = new mongoose.Schema(
     {
-        mementos: [Memento],
-        originator: Originator,
+        _id: String,
+        mementos: [String],
+        originator: String,
     },
     {
         methods: {
-            backup() {
-                this.mementos.push(this.originator.backup());
+            async backup() {
+                let originator = await Originator.findById(this.originator);
+                this.mementos.push(await originator.backup());
             },
-            undo() {
+            async undo() {
                 const memento = this.mementos.pop();
-
-                this.originator.restore(memento);
+                let originator = await Originator.findById(this.orignator);
+                await originator.restore(memento);
             },
-            getLastVersion() {
-                const memento = this.mementos.at(-1);
+            async getLastVersion() {
+                let memento = await Memento.findById(this.mementos.at(-1));
 
                 return {
                     executable: memento.getExecutable(),
@@ -27,9 +29,10 @@ const caretakerSchema = new mongoose.Schema(
                     date: memento.getDate(),
                 };
             },
-            getVersiones() {
+            async getVersiones() {
                 let versions = [];
-                for (let memento of this.mementos) {
+                for (let mementoID of this.mementos) {
+                    let memento = await Memento.findById(mementoID);
                     versions.push({
                         executable: memento.getExecutable(),
                         version: memento.getVersion(),
@@ -43,4 +46,5 @@ const caretakerSchema = new mongoose.Schema(
         },
     },
 );
-module.exports = caretakerSchema;
+
+module.exports = mongoose.model("Caretaker", schema);

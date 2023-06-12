@@ -27,29 +27,34 @@ export class GetZipComponent {
     }
 
     async init() {
+        let payload = jwtDecode(this.token) as Token;
+
+        if (!payload) {
+            throw "You must be logged in to edit information!";
+        }
+        
+        this.game = ((await firstValueFrom(this.cs.getCurrentUserGame(payload._id))).data as Game[])[0];
+
+        if (!this.game) {
+            throw "You need to create a game first before adding its information!";
+        }
+
         document.getElementById("home")?.addEventListener('click', evt => {
             this.router.navigate(['/']);
         });
 
-        let compressedInput = document.getElementById("compressedInput") as HTMLInputElement;
+        let gameExecutableInput = document.getElementById("gameExecutableInput") as HTMLInputElement;
 
-        if (!(compressedInput)) return;
+        if (!(gameExecutableInput)) return;
 
-        compressedInput.setAttribute("accept", ".zip, .rar, .7z, .tar.gz, .tgz, .tar.bz2");
+        gameExecutableInput.setAttribute("accept", ".zip");
         
-        compressedInput.onchange = (evt) => {
+        gameExecutableInput.onchange = (evt) => {
             let files = (evt.target as HTMLInputElement).files;
 
             if (!(files && this.game)) return;
 
- 
-
             this.logo = new File([files[0]], this.game._id, {type: files[0].type});
-
-            let fr = new FileReader();
-            fr.onload = () => {
-                if (!fr.result) return;
-
         }
 
         document.getElementById('back')?.addEventListener('click', (evt) => {
@@ -57,9 +62,33 @@ export class GetZipComponent {
         });
 
         document.getElementById('save')?.addEventListener('click', (evt) => {
-            
+            this.upload();
         });
     }
+
+    upload() {
+        let version = (document.getElementById('gameExecutableVersion') as HTMLInputElement)?.value;
+        let description = (document.getElementById('gameExecutableDescription') as HTMLInputElement)?.value;
+
+        if (!(this.game && this.logo)) {
+            alert("You must provide a valid game executable to continue!");
+            return;
+        }
+
+        let form = new FormData();
+        form.append("file", this.logo);
+        form.append("_id", this.game._id);
+        form.append("version", version);
+        form.append("description", description);
+
+        this.cs.uploadGameExecutable(form, this.token).subscribe(response => {
+            if (response.code == 500) alert(response.message);
+            else if (response.code == 200) {
+                alert(response.message);
+                this.router.navigate(['/']);
+            }
+            else alert('Error: ' + response.message);
+        })
     }
 }
 

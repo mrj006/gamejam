@@ -7,7 +7,7 @@ module.exports = class Controller{
         try {
             return await GameJam.findOne({}).sort('-_id');
         } catch(e) {
-            console.log(e);
+            errorHandling(e, res);
         }
     };
 

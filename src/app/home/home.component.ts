@@ -39,5 +39,15 @@ export class HomeComponent implements OnInit {
         document.getElementById("get-zip")?.addEventListener('click', evt => {
             this.router.navigate(['/get-zip']);
         });
+        document.getElementById("get-pitch")?.addEventListener('click', evt => {
+            this.router.navigate(['/get-pitch']);
+        });
+        document.getElementById("view-gamejam")?.addEventListener('click', evt => {
+            this.router.navigate(['/view-gamejam']);
+        });
+
     }
 }
+
+
+//get-pitch
