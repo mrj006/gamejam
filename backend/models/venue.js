@@ -15,7 +15,7 @@ const venueSchema = new mongoose.Schema({
         required: true,
     },
     gamejam: {
-        type: String,
+        type: Number,
         required: true,
     },
     localOrgs: {
