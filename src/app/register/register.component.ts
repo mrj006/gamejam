@@ -117,7 +117,7 @@ export class RegisterComponent implements OnInit {
         passwordInput?.addEventListener("focusout", evt => {
             let pattern = new RegExp(environment.PASS_REGEX);
             
-            if (emailInput?.value)
+            if (passwordInput?.value)
                 if (!pattern.test(passwordInput.value)) {
                     passwordInput.style.borderColor = "#FF0000";
                     document.getElementById("passError")?.style.setProperty("display", "block");
