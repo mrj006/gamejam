@@ -7,7 +7,6 @@ import { GameInfoComponent } from './game-info/game-info.component';
 import { FirstStageComponent } from './first-stage/first-stage.component';
 import { LoginComponent } from './login/login.component';
 import { GamejamComponent } from './gamejam/gamejam.component';
-import { ViewGamejamsComponent } from './view-gamejams/view-gamejams.component';
 import { GetZipComponent } from './get-zip/get-zip.component';
 import { EngineComponent } from './engine/engine.component';
 import { PlatformComponent } from './platform/platform.component';
@@ -20,15 +19,10 @@ const routes: Routes = [
     { path: 'first-stage', component: FirstStageComponent },
     { path: 'login', component: LoginComponent },
     { path: 'gamejam', component: GamejamComponent },
-    { path: 'view-gamejam', component: ViewGamejamsComponent },
     { path: 'get-zip', component: GetZipComponent },
     { path: 'engine', component: EngineComponent },
     { path: 'platform', component: PlatformComponent},
     { path: 'get-pitch', component: GetPitchComponent},
-
-
-
-
 ];
 
 @NgModule({
