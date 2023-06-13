@@ -8,11 +8,11 @@ export class CustomErrorHandler implements ErrorHandler {
     handleError(error: any) {
         error = error.toString().toLowerCase();
         
-        if (error.includes("Invalid token specified".toLowerCase()) || error.includes("You must be properly signed in before submitting a game!".toLowerCase())) {
-            alert("You must be properly signed in before submitting a game!");
-            this.router.navigate(['/']);
-        } else if (error.includes("You must be logged in to edit information!".toLowerCase())) {
+        if (error.includes("Invalid token specified".toLowerCase()) || error.includes("You must be logged in to edit information!".toLowerCase())) {
             alert("You must be logged in to edit information!");
+            this.router.navigate(['/']);
+        } else if (error.includes("You must be properly signed in before submitting a game!".toLowerCase())) {
+            alert("You must be properly signed in before submitting a game!");
             this.router.navigate(['/']);
         } else if (error.includes("You have already created a game on this GameJam!".toLowerCase())) {
             alert("You have already created a game on this GameJam!\nCheck your games in your profile.");
@@ -24,6 +24,9 @@ export class CustomErrorHandler implements ErrorHandler {
             alert("The maximum logo size is 5 MB! Choose a different image.");
         } else if (error.includes("image dimensions")) {
             alert("The logo maximum dimensions are 400x400! Choose a different image.");
+        } else if (error.includes("you must be logged as global organizer".toLowerCase())) {
+            alert("You must be logged as Global organizer!");
+            this.router.navigate(['/']);
         } else {
             alert("We are unable to load the page, try again later.");
             this.router.navigate(['/']);
