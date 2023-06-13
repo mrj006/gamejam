@@ -1,4 +1,5 @@
 const GameJam = require("./gamejam");
+const User = require("../models/user");
 const Venue = require("../models/venue");
 const errorHandling = require("../configs/error");
 
@@ -16,6 +17,13 @@ module.exports = class Controller{
 
             let venues = await Venue.find({gamejam: gamejam._id});
 
+            if (venues.length == 0) {
+                return res.send({
+                    message: "We couldn't find the information you are looking for.",
+                    code: 404,
+                });
+            }
+
             return res.send({
                 code: 200,
                 data: venues,
@@ -29,6 +37,15 @@ module.exports = class Controller{
         let {city, country} = req.body;
 
         try {
+            let user = await User.findById(req.user);
+
+            if (!user.isGlobalOrg) {
+                return res.send({
+                    message: "You are not authorized to add GameJams!",
+                    code: 403,
+                });
+            }
+
             let gamejam = await GameJam.getCurrentGameJam();
 
             if (!gamejam) {
