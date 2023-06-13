@@ -1,42 +1,45 @@
-<div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-    
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Sign Up</title>
+</head>
+
+<body>
+    <div class="container py-5 col-md-4">
         <div class="card">
-          <div class="card-header text-center">Gamejam</div>
-          <div class="card-body">
-            <form>
-              <div class="form-group">
-                <label for="_id">Date:</label>
-                <input
-                  type="date"
-                  class="form-control"
-                  id="_id"
-                  required
-                />
-              </div>
-              <div class="form-group">
-                <label for="description">Description:</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="description"
-                  placeholder="Description for the gamejam"
-                  required
-                />
-              </div>
-              <div class="d-flex justify-content-between">
-                <button type="button" class="btn btn-primary" id="menu">
-                  Menu
-                </button>
-                <button type="button" class="btn btn-primary" id="createGamejam">
-                    Create gamejam
-                  </button>
-              </div>
-            </form>
-          </div>
+            <div class="card-body">
+                <div class="widgets-wrap float-md-left">
+                    <div class="widget-header mr-3">
+                        <button class="icon icon-sm rounded-circle border" id="home"><i
+                                class="fa fa-home center-xy"></i></button>
+                    </div>
+                </div> <!-- widgets-wrap.// -->
+                <h4 class="text-center mt-4 mb-4" style="text-transform: uppercase;">Game Jams</h4>
+                <form class="mb-3">
+                    <div id="gameJamsDiv">
+                    </div>
+                    <hr class="mt-3 mb-3">
+                    <h5>New GameJam</h5>
+                    <div class="mb-3">
+                        <label for="_id">Date: *</label>
+                        <input type="date" class="form-control" id="_id" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="description">Description:</label>
+                        <input type="text" class="form-control" id="description"
+                            placeholder="Description for the gamejam" required />
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-primary full-width" id="addGameJam">
+                            <p>Add Game Jam</p>
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  
+</body>
+
+</html>

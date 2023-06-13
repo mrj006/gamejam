@@ -35,20 +35,16 @@ export class HomeComponent implements OnInit {
             this.router.navigate(['/login']);
         });
 
-        document.getElementById("gamejam")?.addEventListener('click', evt => {
-            this.router.navigate(['/gamejam']);
-        });
-
         document.getElementById("get-zip")?.addEventListener('click', evt => {
             this.router.navigate(['/get-zip']);
         });
-
+        
         document.getElementById("get-pitch")?.addEventListener('click', evt => {
             this.router.navigate(['/get-pitch']);
         });
-
-        document.getElementById("view-gamejam")?.addEventListener('click', evt => {
-            this.router.navigate(['/view-gamejam']);
+        
+        document.getElementById("gamejam")?.addEventListener('click', evt => {
+            this.router.navigate(['/gamejam']);
         });
 
         document.getElementById("engines")?.addEventListener('click', evt => {
