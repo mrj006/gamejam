@@ -365,8 +365,7 @@ module.exports = class Controller {
                 await caretaker.backup();
                 await caretaker.save();
                 game.gameFile = caretaker._id;
-            }
-            else {
+            } else {
                 let caretaker = await Caretaker.findById(game.gameFile);
                 let originator = await Originator.findById(caretaker.originator);
                 originator.setData(data);
