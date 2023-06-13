@@ -407,6 +407,17 @@ module.exports = class Controller {
                     code: 403,
                 });
             }
+            
+            let regex = new RegExp(process.env.PITCH_REGEX);
+            let match = regex.exec(pitchLink);
+            let domains = ['youtube.com', 'youtu.be'];
+
+            if (!match && !domains.includes(match.groups.domain)) {
+                return res.send({
+                    message: process.env.PITCH_ERROR,
+                    code: 403,
+                });
+            }
 
             let game = await Game.findById(gameID);
             game.pitchLink = pitchLink;
