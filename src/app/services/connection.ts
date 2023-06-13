@@ -19,13 +19,11 @@ export class ConnectionService {
     /////////////////////////////// USER ///////////////////////////////
 
     public registerUser(user: User) {
-        return this.http.post(this.api + '/register', user);
+        return this.http.post<Response>(this.api + '/register', user);
     }
-    public addGamejam(gamejam: Gamejam, token: string) {
-        return this.http.post<Response>(
-            this.api + '/addGameJam?token=' + token,
-            gamejam
-        );
+    
+    public addGameJam(gamejam: Gamejam, token: string) {
+        return this.http.post<Response>(this.api + '/addGameJam?token=' + token, gamejam);
     }
 
     public getCurrentGameJam() {
@@ -88,30 +86,19 @@ export class ConnectionService {
     }
 
     public getCurrentUserGame(user: string) {
-        return this.http.get<Response>(
-            this.api + '/getCurrentUserGame?_id=' + user
-        );
+        return this.http.get<Response>(this.api + '/getCurrentUserGame?_id=' + user);
     }
 
     public uploadFirstStage(game: Game, token: string) {
-        return this.http.post<Response>(
-            this.api + '/firstStage?token=' + token,
-            game
-        );
+        return this.http.post<Response>(this.api + '/firstStage?token=' + token, game);
     }
 
     public uploadTeamInfo(form: FormData, token: string) {
-        return this.http.post<Response>(
-            this.api + '/teamInfo?token=' + token,
-            form
-        );
+        return this.http.post<Response>(this.api + '/teamInfo?token=' + token, form);
     }
 
     public uploadGameInfo(form: FormData, token: string) {
-        return this.http.post<Response>(
-            this.api + '/gameInfo?token=' + token,
-            form
-        );
+        return this.http.post<Response>(this.api + '/gameInfo?token=' + token, form);
     }
 
     public uploadGameExecutable(form: FormData, token: string) {
@@ -119,9 +106,6 @@ export class ConnectionService {
     }
 
     public uploadPitchInfo(game: Game, token: string) {
-        return this.http.post<Response>(
-            this.api + '/uploadGamePitch?token=' + token,
-            game
-        );
+        return this.http.post<Response>(this.api + '/uploadGamePitch?token=' + token, game);
     }
 }

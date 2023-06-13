@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { ConnectionService } from '../services/connection';
-import { Response } from '../services/response';
 import { CookieService } from 'ngx-cookie-service';
 import jwtDecode from 'jwt-decode';
 import { Token } from '../services/token';
@@ -257,20 +256,17 @@ export class RegisterComponent implements OnInit {
             investments,
         }
 
-        this.cs.registerUser(user).subscribe(res => {
-            let response = res as Response;
-
+        this.cs.registerUser(user).subscribe(response => {
             if ([400, 401].includes(response.code)) alert("Error: " + response.message);
-            if (response.code == 403) alert("Error: " + response.message + "\nTry logging in instead.");
-            if (response.code == 500) alert(response.message);
-            if (response.code == 200) {
+            else if (response.code == 403) alert("Error: " + response.message + "\nTry logging in instead.");
+            else if (response.code == 200) {
                 if (response.token) {
                     let payload = jwtDecode(response.token) as Token;
                     let expiration = new Date(payload.exp);       
                     this.cookies.set("token", response.token, expiration);
                 }
                 this.router.navigate(['/']);
-            }          
+            } else alert(response.message);
         });
     }
 }
