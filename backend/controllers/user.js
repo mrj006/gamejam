@@ -86,7 +86,7 @@ module.exports = class Controller{
         }
     
         try {
-            const user = await User.findById(_id);
+            const user = await User.findOne({ $or: [{_id}, {username: _id}]});
 
             if (!(user && (await bcrypt.compare(password, user.password)))) {
                 return res.send({
