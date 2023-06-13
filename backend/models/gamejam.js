@@ -5,7 +5,7 @@ const Theme = require("./theme");
 //_id is the startDate, mongoose requirement https://mongoosejs.com/docs/guide.html#_id
 const gameJamSchema = new mongoose.Schema({
     _id:{
-        type: String,
+        type: Number,
         required: true,
     },
     description:{

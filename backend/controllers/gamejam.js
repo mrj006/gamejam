@@ -5,9 +5,20 @@ const User = require("../models/user");
 module.exports = class Controller{
     static async getCurrentGameJam() {
         try {
-            return await GameJam.findOne({}).sort('-_id');
+            let date = Date.now();
+            
+            let current = await GameJam.findOne({
+                _id: {
+                    $lte: date,
+                    $gt: date - (1000*60*60*24*180),
+                }
+            });
+
+            if (!process.env.TESTING && current) {
+                return current;
+            } else return await GameJam.findOne({}).sort('-_id');
         } catch(e) {
-            errorHandling(e, res);
+            console.log(e);
         }
     };
 
@@ -33,7 +44,7 @@ module.exports = class Controller{
 
     static async getCurrentCategories() {
         try {
-            return (await GameJam.findOne({}).sort('-_id')).categories;
+            return (await this.getCurrentGameJam()).categories;
         } catch(e) {
             console.log(e);
         }
@@ -69,11 +80,12 @@ module.exports = class Controller{
 
     static async getCurrentThemes() {
         try {
-            return (await GameJam.findOne({}).sort('-_id')).themes;
+            return (await this.getCurrentGameJam()).themes;
         } catch(e) {
             console.log(e);
         }
     }
+
     static getCurrentThemesRoute = async (req, res) => {
         try {
             let themes = await this.getCurrentThemes();
@@ -124,7 +136,7 @@ module.exports = class Controller{
                 });
             }
 
-            const gamejam = new GameJam({
+            let gamejam = new GameJam({
                 _id, 
                 description,
             });
@@ -187,7 +199,7 @@ module.exports = class Controller{
 
             await GameJam.findByIdAndRemove(_id);
 
-            return re.send({
+            return res.send({
                 code: 200,
             });
         } catch(e) {
