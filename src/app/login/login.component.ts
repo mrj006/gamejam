@@ -22,6 +22,11 @@ export class LoginComponent implements OnInit {
         document.getElementById('register')?.addEventListener('click', (evt) => {
             this.router.navigate(['/register']);
         });
+        
+        document.getElementById("home")?.addEventListener('click', evt => {
+            this.router.navigate(['/']);
+        });
+
         document.getElementById('login')?.addEventListener('click', (evt) => {
             this.login();
         });

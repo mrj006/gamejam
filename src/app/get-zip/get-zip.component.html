@@ -7,8 +7,8 @@
 </head>
 
 <body>
-    <div class="container py-5">
-        <div class="card signup_v4 mb-30">
+    <div class="container py-5 col-md-4">
+        <div class="card">
             <div class="card-body">
                 <div class="widgets-wrap float-md-left">
                     <div class="widget-header mr-3">
@@ -23,17 +23,19 @@
                 </h4>
                 <form>
                     <div class="form-row">
-                        <div class="mb-3 col-md-3">
+                        <div class="mb-3 col-md-12">
                             <label class="form-label" for="gameExecutableInput">Game Executable *</label>
                             <input class="form-control" type="file" id="gameExecutableInput" name="gameExecutableInput" #gameExecutableInput required />
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="mb-3 col-md-3">
+                        <div class="mb-3 col-md-12">
                             <label class="form-label" for="gameExecutableVersion">Version *</label>
                             <input class="form-control" type="text" placeholder="Type in your game version" id="gameExecutableVersion"
                                 name="gameExecutableVersion" #gameExecutableVersion />
                         </div>
+                    </div>
+                    <div class="form-row">
                         <div class="mb-3 col-md-12">
                             <label class="form-label" for="gameExecutableDescription">Description *</label>
                             <textarea class="form-control" type="text" placeholder="Type in your version description/changelog" id="gameExecutableDescription"

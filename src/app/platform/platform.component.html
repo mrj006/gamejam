@@ -1,27 +1,44 @@
-<div class="container py-5">
-  <div class="card signup_v4 mb-30">
-    <div class="card-body">
-      <h1 class="text-center">Platform</h1>
-      <div class="form-group">
-        <div class="mb-3 col-md-12" > 
-          <select multiple class= "form-control"  aria-label="Select platform" id="platformSelect">                        
-          </select>                            
-        </div> 
-        <div class="mb-3 col-md-12">
-          <button class="btn btn-danger" id="deleteSelected" type="button">
-              Delete selected
-          </button>
-        </div> 
-        <div class="mb-3 col-md-12">          
-          <input type="text" class = "form-control" placeholder="platform name" id="platformName" >           
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Manage Platforms</title>
+</head>
+
+<body>
+    <div class="container py-5 col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="widgets-wrap float-md-left">
+                    <div class="widget-header mr-3">
+                        <button class="icon icon-sm rounded-circle border" id="home"><i
+                                class="fa fa-home center-xy"></i></button>
+                    </div>
+                </div> <!-- widgets-wrap.// -->
+                <h4 class="text-center mt-4 mb-4" style="text-transform: uppercase;">Platforms</h4>
+                <form class="mb-3">
+                    <div class="mb-3 col-md-12">
+                        <select multiple class="form-control" aria-label="Select platform" id="platformSelect">
+                        </select>
+                    </div>
+                    <div class="mb-3 col-md-12">
+                        <button class="btn btn-danger" id="deleteSelected" type="button">
+                            Delete selected
+                        </button>
+                    </div>
+                    <div class="mb-3 col-md-12">
+                        <input type="text" class="form-control" placeholder="Platform name" id="platformName">
+                    </div>
+                    <div class="mb-3 col-md-12">
+                        <button type="button" class="btn btn-primary full-width" id="addPlatformButton">
+                            <p>Add platform</p>
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="mb-3 col-md-12">
-          <button type="button" class="btn btn-primary full-width" id="addPlatformButton"  >
-              <p>Add platform</p>
-          </button>
-        </div>      
-      </div>
     </div>
-  </div>
-</div>
-  
+</body>
+
+</html>
